@@ -3,31 +3,37 @@
 @{
     ViewBag.Title = "Index";
 }
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <a class="btn btn-cyan float-right" href="@Url.Action("Create")">Create New</a>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title m-b-0">Section Master</h5>
+            </div>
+            <table class="table">
+                <tr>
+                    <th>
+                      Section Name
+                    </th>
+                    <th></th>
+                </tr>
 
-<h2>Index</h2>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SectionName)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.SectionId }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.SectionId })
+                        </td>
+                    </tr>
+                }
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.SectionName)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.SectionName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.SectionId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.SectionId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.SectionId })
-        </td>
-    </tr>
-}
-
-</table>
+            </table>
+        </div>
+    </div>
+</div>
