@@ -6,10 +6,10 @@
 }
 
 <div class="auth-wrapper d-flex no-block justify-content-center align-items-center bg-dark col-lg-12">
-    <div class="col-lg-8">
+    <div class="col-lg-8 d-flex no-block justify-content-center align-items-center">
 
-        <div id="jssor_1" style="position:relative;top:0px;left:0px;width:980px;height:380px;overflow:hidden;">
-            <div data-u="slides" style="position:absolute;top:0px;left:0px;width:980px;height:380px;overflow:hidden;">
+        <div id="jssor_1" class="img-responsive" style="position:relative;top:0px;left:0px;width:980px;height:380px;overflow:hidden;">
+            <div  class="img-responsive"  data-u="slides" style="position:absolute;top:0px;left:0px;width:980px;height:380px;overflow:hidden;">
                 <div><img data-u="image" src="~/Content/theme/assets/images/001.jpg" /></div>
                 <div><img data-u="image" src="~/Content/theme/assets/images/002.jpg" /></div>
                 <div><img data-u="image" src="~/Content/theme/assets/images/003.jpg" /></div>
@@ -18,11 +18,14 @@
         </div>
     </div>
 
-    <div class="auth-box bg-dark border-top border-secondary col-lg-4">
+    <div class="auth-box border-top border-secondary col-lg-4 d-flex no-block justify-content-center align-items-center">
 
         <div id="loginform">
             <div class="text-center p-t-20 p-b-20">
-                <span class="db"><img src="~/Content/theme/assets/images/logo.png" alt="logo" /></span>
+                <span class="db" style="font-size:30px;font-weight:800">
+                    e-Office
+                    @*<img src="~/Content/theme/assets/images/logo.png" alt="logo" />*@
+                </span>
             </div>
             <!-- Form -->
             @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal m-t-20", id = "loginform", role = "form" }))

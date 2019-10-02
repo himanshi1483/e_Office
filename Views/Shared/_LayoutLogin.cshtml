@@ -21,37 +21,23 @@
 </head>
 <body>
     <div class="main-wrapper">
-        <header class="topbar" data-navbarbg="skin1" style="text-align:center;">
-            <img src="~/Content/theme/assets/images/logo.png" style="float:left" />
+        <header class="topbar" data-navbarbg="skin1" style="text-align:center;margin-top:30px">
             <h1>e-Office</h1>
-            <img src="~/Content/theme/assets/images/logo.png" style="float:right" />
-
         </header>
-            <!-- ============================================================== -->
-            <!-- Preloader - style you can find in spinners.css -->
-            <!-- ============================================================== -->
-            <div class="preloader">
-                <div class="lds-ripple">
-                    <div class="lds-pos"></div>
-                    <div class="lds-pos"></div>
-                </div>
-            </div>  @RenderBody()
-            <!-- ============================================================== -->
-            <!-- Preloader - style you can find in spinners.css -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- Login box.scss -->
-            <!-- ============================================================== -->
-            @*<div class="auth-wrapper d-flex no-block justify-content-center align-items-center bg-dark">
-                <div class="auth-box bg-dark border-top border-secondary">
 
-                </div>
-            </div>*@
+        <div class="preloader">
+            <div class="lds-ripple">
+                <div class="lds-pos"></div>
+                <div class="lds-pos"></div>
+            </div>
+        </div>  @RenderBody()
 
-            <footer>
-                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-            </footer>
     </div>
+
+
+    <footer class="text-center" style="padding-top:5px">
+        <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+    </footer>
     <script src="~/Scripts/jquery-3.3.1.min.js"></script>
     <script src="~/Content/theme/dist/js/jquery.ui.touch-punch-improved.js"></script>
     <script src="~/Content/theme/dist/js/jquery-ui.min.js"></script>
