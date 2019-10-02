@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="~/Content/theme/assets/images/favicon.png">
+    <title>e-Office</title>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+    <![endif]-->
+    <link href="~/Content/theme/dist/css/style.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="main-wrapper">
+        <header class="topbar" data-navbarbg="skin1" style="text-align:center;">
+            <img src="~/Content/theme/assets/images/logo.png" style="float:left" />
+            <h1>e-Office</h1>
+            <img src="~/Content/theme/assets/images/logo.png" style="float:right" />
+
+        </header>
+            <!-- ============================================================== -->
+            <!-- Preloader - style you can find in spinners.css -->
+            <!-- ============================================================== -->
+            <div class="preloader">
+                <div class="lds-ripple">
+                    <div class="lds-pos"></div>
+                    <div class="lds-pos"></div>
+                </div>
+            </div>  @RenderBody()
+            <!-- ============================================================== -->
+            <!-- Preloader - style you can find in spinners.css -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- Login box.scss -->
+            <!-- ============================================================== -->
+            @*<div class="auth-wrapper d-flex no-block justify-content-center align-items-center bg-dark">
+                <div class="auth-box bg-dark border-top border-secondary">
+
+                </div>
+            </div>*@
+
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>
+    </div>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Content/theme/dist/js/jquery.ui.touch-punch-improved.js"></script>
+    <script src="~/Content/theme/dist/js/jquery-ui.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Content/theme/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="~/Content/theme/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    @RenderSection("scripts", required: false)
+    <script>
+
+        $('[data-toggle="tooltip"]').tooltip();
+        $(".preloader").fadeOut();
+        // ==============================================================
+        // Login and Recover Password
+        // ==============================================================
+        $('#to-recover').on("click", function () {
+            $("#loginform").slideUp();
+            $("#recoverform").fadeIn();
+        });
+        $('#to-login').click(function () {
+
+            $("#recoverform").hide();
+            $("#loginform").fadeIn();
+        });
+    </script>
+
+</body>
+</html>

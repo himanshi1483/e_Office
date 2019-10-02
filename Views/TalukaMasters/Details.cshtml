@@ -1,0 +1,50 @@
+﻿@model e_Office.Models.TalukaMaster
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>TalukaMaster</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TalukaName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TalukaName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TalukaCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TalukaCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DistrictCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DistrictCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StateCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StateCode)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.TalukaId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

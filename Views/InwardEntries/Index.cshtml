@@ -1,0 +1,111 @@
+﻿@model IEnumerable<e_Office.Models.InwardEntry>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DocumentLocation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InwardNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InwardDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Subject)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SendToDept)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SendToUser)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SendToCC)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.From)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DueDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Action)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Priority)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Classification)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Remarks)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Tags)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.DocumentLocation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InwardNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InwardDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Subject)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SendToDept)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SendToUser)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SendToCC)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.From)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DueDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Action)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Priority)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Classification)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Remarks)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Tags)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.InwardId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.InwardId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.InwardId })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,42 @@
+﻿@model e_Office.Models.DistrictMaster
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>DistrictMaster</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DistrictName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DistrictName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DistrictCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DistrictCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StateCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StateCode)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.DistrictId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

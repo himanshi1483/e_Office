@@ -1,0 +1,130 @@
+﻿@model e_Office.Models.InwardEntry
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>InwardEntry</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DocumentLocation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DocumentLocation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InwardNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InwardNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InwardDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InwardDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Subject)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Subject)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SendToDept)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SendToDept)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SendToUser)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SendToUser)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SendToCC)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SendToCC)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.From)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.From)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DueDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DueDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Action)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Action)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Priority)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Priority)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Classification)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Classification)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Remarks)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Remarks)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tags)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tags)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.InwardId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
