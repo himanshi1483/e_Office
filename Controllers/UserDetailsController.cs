@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using e_Office.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace e_Office.Controllers
 {
@@ -35,10 +37,31 @@ namespace e_Office.Controllers
             return View(userDetails);
         }
 
+        public JsonResult CheckUser(string user)
+        {
+            var username = user;
+            var isUser = db.Users.Any(x => x.UserName == user);
+            int i = 1;
+
+            while (isUser)
+            {
+                username = String.Concat(user, i);
+                isUser = db.Users.Any(x => x.UserName == username);
+                i = i+1;
+            }
+
+            return Json(username);
+        }
+
         // GET: UserDetails/Create
         public ActionResult Create()
         {
-            return View();
+            var model = new UserDetails();
+            ViewBag.DeptId = new SelectList(db.DeptMasters, "DeptId", "DeptName", model.DeptId);
+            ViewBag.DesignationId = new SelectList(db.DesignationMasters, "DesignationId", "DesignationName", model.DesignationId);
+            ViewBag.AuthorityId = new SelectList(db.AuthorityMasters, "AuthorityId", "AuthorityName", model.AuthorityId);
+
+            return View(model);
         }
 
         // POST: UserDetails/Create
@@ -52,9 +75,27 @@ namespace e_Office.Controllers
             {
                 db.UserDetails.Add(userDetails);
                 db.SaveChanges();
+
+                UserStore<ApplicationUser> store = new UserStore<ApplicationUser>(db);
+                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var user = new ApplicationUser();
+
+                user.UserName = userDetails.Username.ToString();
+                user.Email = userDetails.EmailAddress;
+                String hashedNewPassword = UserManager.PasswordHasher.HashPassword(userDetails.Password);
+                user.PasswordHash = hashedNewPassword;
+                var chkUser = UserManager.Create(user, userDetails.Password);
+
+                //Add default User to Role User    
+                if (chkUser.Succeeded)
+                {
+                    var result1 = UserManager.AddToRole(user.Id, "User");
+                }
                 return RedirectToAction("Index");
             }
-
+            ViewBag.DeptId = new SelectList(db.DeptMasters, "DeptId", "DeptName", userDetails.DeptId);
+            ViewBag.DesignationId = new SelectList(db.DesignationMasters, "DesignationId", "DesignationName", userDetails.DesignationId);
+            ViewBag.AuthorityId = new SelectList(db.AuthorityMasters, "AuthorityId", "AuthorityName", userDetails.AuthorityId);
             return View(userDetails);
         }
 
@@ -70,6 +111,10 @@ namespace e_Office.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.DeptId = new SelectList(db.DeptMasters, "DeptId", "DeptName", userDetails.DeptId);
+            ViewBag.DesignationId = new SelectList(db.DesignationMasters, "DesignationId", "DesignationName", userDetails.DesignationId);
+            ViewBag.AuthorityId = new SelectList(db.AuthorityMasters, "AuthorityId", "AuthorityName", userDetails.AuthorityId);
+
             return View(userDetails);
         }
 
@@ -86,6 +131,9 @@ namespace e_Office.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.DeptId = new SelectList(db.DeptMasters, "DeptId", "DeptName", userDetails.DeptId);
+            ViewBag.DesignationId = new SelectList(db.DesignationMasters, "DesignationId", "DesignationName", userDetails.DesignationId);
+            ViewBag.AuthorityId = new SelectList(db.AuthorityMasters, "AuthorityId", "AuthorityName", userDetails.AuthorityId);
             return View(userDetails);
         }
 

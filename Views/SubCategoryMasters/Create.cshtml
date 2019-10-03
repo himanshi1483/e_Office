@@ -29,7 +29,7 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.EditorFor(model => model.CategoryId, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.DropDownList("CategoryId", null, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -41,14 +41,19 @@
                         </div>
                     </div>
                 }
-                </div>
             </div>
         </div>
     </div>
-                <div>
-                    @Html.ActionLink("Back to List", "Index")
-                </div>
+</div>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
 
-                @section Scripts {
-                    @Scripts.Render("~/bundles/jqueryval")
-                }
+<script src="~/Content/theme/assets/libs/jquery/dist/jquery.min.js"></script>
+<script>
+    jQuery('#SubCategoryName').keyup(function () {
+        var caps = jQuery('#SubCategoryName').val();
+        caps = caps.charAt(0).toUpperCase() + caps.slice(1);
+        jQuery('#SubCategoryName').val(caps);
+    });
+</script>

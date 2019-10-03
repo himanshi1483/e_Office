@@ -17,6 +17,8 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 
     <![endif]-->
+    <link rel="stylesheet" type="text/css" href="~/Content/theme/assets/libs/select2/dist/css/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/theme/assets/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
     <link href="~/Content/theme/assets/libs/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" />
     <link href="~/Content/theme/assets/extra-libs/calendar/calendar.css" rel="stylesheet" />
     <link href="~/Content/theme/dist/css/style.min.css" rel="stylesheet" />
@@ -279,6 +281,18 @@
 
     <script src="~/Content/theme/assets/libs/fullcalendar/dist/fullcalendar.min.js"></script>
     <script src="~/Content/theme/dist/js/pages/calendar/cal-init.js"></script>
+    <script src="~/Content/theme/assets/libs/select2/dist/js/select2.full.min.js"></script>
+    <script src="~/Content/theme/assets/libs/select2/dist/js/select2.min.js"></script>
+    <script src="~/Content/theme/assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     @RenderSection("scripts", required: false)
-</body>
-</html>
+    <script>
+        jQuery('.mydatepicker').datepicker({
+            autoclose: true,
+            monthNamesShort: true,
+            format: 'dd/mm/yyyy',
+            todayHighlight: true,
+            orientation: "bottom"
+        });
+    </script>
+</body >
+</html >

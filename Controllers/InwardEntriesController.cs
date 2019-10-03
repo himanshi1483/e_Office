@@ -38,7 +38,12 @@ namespace e_Office.Controllers
         // GET: InwardEntries/Create
         public ActionResult Create()
         {
-            return View();
+            var model = new InwardEntry();
+            ViewBag.SendToDept = new SelectList(db.DeptMasters, "DeptId", "DeptName", model.SendToDept);
+            ViewBag.SendToCC = new SelectList(db.UserDetails, "UserDetailId", "EmailAddress", model.SendToCC);
+            ViewBag.SendToUser = new SelectList(db.UserDetails, "UserDetailId", "EmailAddress", model.SendToUser);
+            ViewBag.Classification = new SelectList(db.ClassificationMasters, "ClassificationId", "ClassificationName", model.Classification);
+            return View(model);
         }
 
         // POST: InwardEntries/Create
@@ -52,6 +57,9 @@ namespace e_Office.Controllers
             {
                 db.InwardEntries.Add(inwardEntry);
                 db.SaveChanges();
+                ViewBag.DeptId = new SelectList(db.DeptMasters, "DeptId", "DeptName", inwardEntry.SendToDept);
+                ViewBag.Classification = new SelectList(db.ClassificationMasters, "ClassificationId", "ClassificationName", inwardEntry.Classification);
+
                 return RedirectToAction("Index");
             }
 
@@ -66,6 +74,9 @@ namespace e_Office.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             InwardEntry inwardEntry = db.InwardEntries.Find(id);
+            ViewBag.DeptId = new SelectList(db.DeptMasters, "DeptId", "DeptName", inwardEntry.SendToDept);
+            ViewBag.Classification = new SelectList(db.ClassificationMasters, "ClassificationId", "ClassificationName", inwardEntry.Classification);
+
             if (inwardEntry == null)
             {
                 return HttpNotFound();
@@ -84,8 +95,12 @@ namespace e_Office.Controllers
             {
                 db.Entry(inwardEntry).State = EntityState.Modified;
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
+            ViewBag.DeptId = new SelectList(db.DeptMasters, "DeptId", "DeptName", inwardEntry.SendToDept);
+            ViewBag.Classification = new SelectList(db.ClassificationMasters, "ClassificationId", "ClassificationName", inwardEntry.Classification);
+
             return View(inwardEntry);
         }
 

@@ -43,15 +43,20 @@
                         </div>
                     </div>
                 }
-                </div>
             </div>
         </div>
     </div>
+</div>
 
-                <div>
-                    @Html.ActionLink("Back to List", "Index")
-                </div>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
 
-                @section Scripts {
-                    @Scripts.Render("~/bundles/jqueryval")
-                }
+<script src="~/Content/theme/assets/libs/jquery/dist/jquery.min.js"></script>
+<script>
+    jQuery('#SubCategoryName').keyup(function () {
+        var caps = jQuery('#SubCategoryName').val();
+        caps = caps.charAt(0).toUpperCase() + caps.slice(1);
+        jQuery('#SubCategoryName').val(caps);
+    });
+</script>

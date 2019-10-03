@@ -48,7 +48,9 @@ namespace e_Office.Models
 
     public class LoginViewModel
     {
-        [Required]
+        [Display(Name = "Username")]
+        public string Username { get; set; }
+
         [Display(Name = "Email")]
         [EmailAddress]
         public string Email { get; set; }
@@ -64,6 +66,9 @@ namespace e_Office.Models
 
     public class RegisterViewModel
     {
+        [Display(Name = "Username")]
+        public string Username { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
@@ -104,6 +109,9 @@ namespace e_Office.Models
 
     public class ForgotPasswordViewModel
     {
+        [Display(Name = "Username")]
+        public string Username { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

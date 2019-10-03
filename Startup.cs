@@ -12,8 +12,8 @@ namespace e_Office
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
-          //  app.CreatePerOwinContext<ApplicationRoleManager>(ApplicationRoleManager.Create);
-          //  createRolesandUsers();
+            app.CreatePerOwinContext<ApplicationRoleManager>(ApplicationRoleManager.Create);
+            createRolesandUsers();
 
         }
 

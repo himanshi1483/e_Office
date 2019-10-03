@@ -43,6 +43,11 @@
     @Html.ActionLink("Back to List", "Index")
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+<script src="~/Content/theme/assets/libs/jquery/dist/jquery.min.js"></script>
+<script>
+    jQuery('#SectionName').keyup(function () {
+        var caps = jQuery('#SectionName').val();
+        caps = caps.charAt(0).toUpperCase() + caps.slice(1);
+        jQuery('#SectionName').val(caps);
+    });
+</script>

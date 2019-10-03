@@ -38,7 +38,10 @@ namespace e_Office.Controllers
         // GET: SubCategoryMasters/Create
         public ActionResult Create()
         {
-            return View();
+            var model = new SubCategoryMaster();
+           // model.Category = db.CategoryMasters.ToList();
+            ViewBag.CategoryId = new SelectList(db.CategoryMasters, "CategoryId", "CategoryName", model.CategoryId);
+            return View(model);
         }
 
         // POST: SubCategoryMasters/Create
@@ -54,7 +57,7 @@ namespace e_Office.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
+            ViewBag.CategoryId = new SelectList(db.CategoryMasters, "CategoryId", "CategoryName", subCategoryMaster.CategoryId);
             return View(subCategoryMaster);
         }
 
@@ -66,6 +69,8 @@ namespace e_Office.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             SubCategoryMaster subCategoryMaster = db.SubCategoryMasters.Find(id);
+            ViewBag.CategoryId = new SelectList(db.CategoryMasters, "CategoryId", "CategoryName", subCategoryMaster.CategoryId);
+
             if (subCategoryMaster == null)
             {
                 return HttpNotFound();
@@ -86,6 +91,7 @@ namespace e_Office.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.CategoryId = new SelectList(db.CategoryMasters, "CategoryId", "CategoryName", subCategoryMaster.CategoryId);
             return View(subCategoryMaster);
         }
 
@@ -110,6 +116,7 @@ namespace e_Office.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             SubCategoryMaster subCategoryMaster = db.SubCategoryMasters.Find(id);
+
             db.SubCategoryMasters.Remove(subCategoryMaster);
             db.SaveChanges();
             return RedirectToAction("Index");

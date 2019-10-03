@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -80,13 +81,15 @@ namespace e_Office.Models
     {
         [Key]
         public int BasicHeadId { get; set; }
-       
+        public string BasicHeadName { get; set; }
+
     }
 
     public class StandardHeadMaster
     {
         [Key]
         public int StdHeadId { get; set; }
+        public string StdHeadName { get; set; }
 
     }
 
@@ -94,6 +97,7 @@ namespace e_Office.Models
     {
         [Key]
         public int SubHeadId { get; set; }
+        public string SubHeadName { get; set; }
 
     }
 
@@ -118,7 +122,13 @@ namespace e_Office.Models
         [Key]
         public int SubCategoryId { get; set; }
         public string SubCategoryName { get; set; }
+        //public int CategoryId { get; set; }
+        // Foreign key 
+        [Display(Name = "Category")]
         public int CategoryId { get; set; }
+
+        [ForeignKey("CategoryId")]
+        public virtual CategoryMaster Category { get; set; }
 
     }
 

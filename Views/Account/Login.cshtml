@@ -5,15 +5,15 @@
     Layout = "~/Views/Shared/_LayoutLogin.cshtml";
 }
 
-<div class="auth-wrapper d-flex no-block justify-content-center align-items-center bg-dark col-lg-12">
+<div class="auth-wrapper d-flex no-block justify-content-center align-items-center bg-indigo col-lg-12">
     <div class="col-lg-8 d-flex no-block justify-content-center align-items-center">
 
         <div id="jssor_1" class="img-responsive" style="position:relative;top:0px;left:0px;width:980px;height:380px;overflow:hidden;">
             <div  class="img-responsive"  data-u="slides" style="position:absolute;top:0px;left:0px;width:980px;height:380px;overflow:hidden;">
-                <div><img data-u="image" src="~/Content/theme/assets/images/001.jpg" /></div>
-                <div><img data-u="image" src="~/Content/theme/assets/images/002.jpg" /></div>
-                <div><img data-u="image" src="~/Content/theme/assets/images/003.jpg" /></div>
-                <div><img data-u="image" src="~/Content/theme/assets/images/004.jpg" /></div>
+                <div><img data-u="image" src="~/Images/1.jpg" /></div>
+                <div><img data-u="image" src="~/Images/2.jpg" /></div>
+                <div><img data-u="image" src="~/Images/3.jpg" /></div>
+                <div><img data-u="image" src="~/Images/4.jpg" /></div>
             </div>
         </div>
     </div>
@@ -39,8 +39,8 @@
                                 <span class="input-group-text bg-success text-white" id="basic-addon1"><i class="ti-user"></i></span>
                             </div>
                             @*<input type="text" class="form-control form-control-lg" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" required="">*@
-                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control form-control-lg", @placeholder = "Username", @required = "required" })
-                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                            @Html.TextBoxFor(m => m.Username, new { @class = "form-control form-control-lg", @placeholder = "Username", @required = "required" })
+                            @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">

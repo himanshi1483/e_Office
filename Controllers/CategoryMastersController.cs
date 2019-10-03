@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using e_Office.Models;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using e_Office.Models;
 
 namespace e_Office.Controllers
 {
@@ -15,8 +11,16 @@ namespace e_Office.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: CategoryMasters
-        public ActionResult Index()
+        public ActionResult Index(string status)
         {
+            if(status == null)
+            {
+                ViewBag.CategoryDelete = null;
+            }
+            else
+            {
+                ViewBag.CategoryDelete = "Category cannot be deleted.";
+            }
             return View(db.CategoryMasters.ToList());
         }
 
@@ -110,9 +114,19 @@ namespace e_Office.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             CategoryMaster categoryMaster = db.CategoryMasters.Find(id);
-            db.CategoryMasters.Remove(categoryMaster);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (db.SubCategoryMasters.Any(x => x.CategoryId == id))
+            {
+                ViewBag.CategoryDelete = "This Category cannot be deleted as it is already in use.";
+                return RedirectToAction("Index", "CategoryMasters",new { status = "Delete" });
+            }
+            else
+            {
+                ViewBag.CategoryDelete = null;
+                db.CategoryMasters.Remove(categoryMaster);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+
+            }
         }
 
         protected override void Dispose(bool disposing)

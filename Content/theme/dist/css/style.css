@@ -858,8 +858,8 @@ pre {
 
 .container-fluid {
   width: 100%;
-  padding-right: 10px;
-  padding-left: 10px;
+  /*padding-right: 10px;
+  padding-left: 10px;*/
   margin-right: auto;
   margin-left: auto; }
 
@@ -5586,6 +5586,9 @@ button.bg-primary:hover,
 button.bg-primary:focus {
   background-color: #4c32e9 !important; }
 
+.bg-indigo{
+    background-color: #5285b1;
+}
 .bg-secondary {
   background-color: #6c757d !important; }
 
@@ -8293,7 +8296,7 @@ html[dir="ltr"] body .p-l-0 {
  Footer
 *******************/
 .footer {
-  padding: 15px 20px; }
+  padding: 10px 10px; }
 
 /*******************
  Stickey inner-left-part
