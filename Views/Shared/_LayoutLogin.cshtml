@@ -21,22 +21,37 @@
 </head>
 <body>
     <div class="main-wrapper">
-        <header class="topbar" data-navbarbg="skin1" style="text-align:center;margin-top:30px">
-            <h1>e-Office</h1>
-        </header>
+        <div class="container-fluid">
+            <!-- ============================================================== -->
+            <!-- Start Page Content -->
+            <!-- ============================================================== -->
+          
+            <header class="topbar" data-navbarbg="skin1" style="height:100px">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="~/Content/theme/assets/images/dummy.png" width="200" height="100" />
+                    </div>
+                    <div class="col-md-4 text-center" style="margin-top:30px">  <h1>e-Office</h1></div>
+                    <div class="col-md-4">
+                        <img src="~/Content/theme/assets/images/dummy.png" class="float-right" width="200" height="100" />
+                    </div>
+                </div>
+            </header>
+                <div class="preloader">
+                    <div class="lds-ripple">
+                        <div class="lds-pos"></div>
+                        <div class="lds-pos"></div>
+                    </div>
+                </div>  @RenderBody()
 
-        <div class="preloader">
-            <div class="lds-ripple">
-                <div class="lds-pos"></div>
-                <div class="lds-pos"></div>
-            </div>
-        </div>  @RenderBody()
-
+         
+        </div>
     </div>
 
-
-    <footer class="text-center" style="padding-top:5px">
-        <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+    <footer class="footer text-center">
+        <span>About Us  |  Provacy Policy  |Contact Us</span>
+        <br />
+        All Rights Reserved by Aarush Systems. Designed and Developed by Aarush Systems.
     </footer>
     <script src="~/Scripts/jquery-3.3.1.min.js"></script>
     <script src="~/Content/theme/dist/js/jquery.ui.touch-punch-improved.js"></script>
