@@ -13176,7 +13176,7 @@ Earnings
  *  14. Component
  */
 .auth-wrapper {
-  min-height: 100vh;
+  min-height: 70vh;
   position: relative; }
   .auth-wrapper .auth-box {
     background: #fff;
