@@ -230,6 +230,14 @@
     <Compile Include="Migrations\201910031412327_init8.Designer.cs">
       <DependentUpon>201910031412327_init8.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201910041106028_init9.cs" />
+    <Compile Include="Migrations\201910041106028_init9.Designer.cs">
+      <DependentUpon>201910041106028_init9.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910041117384_init10.cs" />
+    <Compile Include="Migrations\201910041117384_init10.Designer.cs">
+      <DependentUpon>201910041117384_init10.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Category.cs" />
@@ -649,16 +657,6 @@
     <Content Include="Content\theme\assets\libs\jquery-minicolors\jquery.minicolors.min.js" />
     <Content Include="Content\theme\assets\libs\jquery-minicolors\jquery.minicolors.png" />
     <Content Include="Content\theme\assets\libs\jquery-minicolors\without-bootstrap.html" />
-    <Content Include="Content\theme\assets\libs\jquery-steps\build\jquery.steps.min.js" />
-    <Content Include="Content\theme\assets\libs\jquery-steps\jquery.steps.css" />
-    <Content Include="Content\theme\assets\libs\jquery-steps\lib\jquery-1.10.2.min.js" />
-    <Content Include="Content\theme\assets\libs\jquery-steps\lib\jquery-1.11.1.min.js" />
-    <Content Include="Content\theme\assets\libs\jquery-steps\lib\jquery-1.9.1.min.js" />
-    <Content Include="Content\theme\assets\libs\jquery-steps\lib\jquery.cookie-1.3.1.js" />
-    <Content Include="Content\theme\assets\libs\jquery-steps\lib\modernizr-2.6.2.min.js" />
-    <Content Include="Content\theme\assets\libs\jquery-steps\LICENSE.txt" />
-    <Content Include="Content\theme\assets\libs\jquery-steps\nuget\NuGet.exe" />
-    <Content Include="Content\theme\assets\libs\jquery-steps\steps.css" />
     <Content Include="Content\theme\assets\libs\jquery-validation\dist\additional-methods.js" />
     <Content Include="Content\theme\assets\libs\jquery-validation\dist\jquery.validate.min.js" />
     <Content Include="Content\theme\assets\libs\jquery-validation\dist\localization\messages_ar.js" />
@@ -1021,6 +1019,14 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\1.jpg" />
+    <Content Include="Images\2.jpg" />
+    <Content Include="Images\3.jpg" />
+    <Content Include="Images\4.jpg" />
+    <Content Include="Images\Left.png" />
+    <Content Include="Images\logo.jpg" />
+    <Content Include="Images\Middle.jpg" />
+    <Content Include="Images\Right.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\theme\assets\images\big\Thumbs.db" />
@@ -1076,10 +1082,6 @@
     <Content Include="Content\theme\assets\libs\jquery-asGradient\package.json" />
     <Content Include="Content\theme\assets\libs\jquery-asGradient\README.md" />
     <Content Include="Content\theme\assets\libs\jquery-minicolors\component.json" />
-    <Content Include="Content\theme\assets\libs\jquery-steps\build\jquery.steps-1.1.0.zip" />
-    <Content Include="Content\theme\assets\libs\jquery-steps\build\jQuery.Steps.1.1.0.nupkg" />
-    <Content Include="Content\theme\assets\libs\jquery-steps\nuget\jQuery.Steps.nuspec" />
-    <Content Include="Content\theme\assets\libs\jquery-steps\steps.jquery.json" />
     <Content Include="Content\theme\dist\css\icons\font-awesome\less\fa-brands.less" />
     <Content Include="Content\theme\dist\css\icons\font-awesome\less\fa-regular.less" />
     <Content Include="Content\theme\dist\css\icons\font-awesome\less\fa-solid.less" />
@@ -1204,6 +1206,7 @@
     <Content Include="Content\theme\dist\css\icons\weather-icons\sass\weather-icons-wind.scss" />
     <Content Include="Content\theme\dist\css\icons\weather-icons\sass\weather-icons.min.scss" />
     <Content Include="Content\theme\dist\css\icons\weather-icons\sass\weather-icons.scss" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -1382,6 +1385,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910031412327_init8.resx">
       <DependentUpon>201910031412327_init8.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910041106028_init9.resx">
+      <DependentUpon>201910041106028_init9.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910041117384_init10.resx">
+      <DependentUpon>201910041117384_init10.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

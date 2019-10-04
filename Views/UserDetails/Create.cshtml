@@ -141,8 +141,8 @@
                         <div class="form-group row">
                             @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "col-sm-3 text-right control-label col-form-label" })
                             <div class="col-md-9">
-                                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @type = "Password", @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @readonly = "readonly",    @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Password, "", new {  @class = "text-danger" })
                             </div>
                         </div>
 
@@ -176,6 +176,16 @@
                 dataType: "json",
                 success: function (resultData) {
                     $("#Username").val(resultData);
+                }
+            });
+
+            $.ajax({
+                type: 'POST',
+                url: "/UserDetails/GetPassword",
+                data: { user: _user },
+                dataType: "json",
+                success: function (resultData) {
+                    $("#Password").val(resultData);
                 }
             });
         });

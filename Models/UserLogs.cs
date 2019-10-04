@@ -48,7 +48,7 @@ namespace e_Office.Models
         public string PhoneNo { get; set; }
         [Display(Name = "Date of Birth")]
 
-        public DateTime DOB { get; set; }
+        public DateTime? DOB { get; set; }
         [Display(Name = "Is Head of Department?")]
 
         public bool IsHOD { get; set; }

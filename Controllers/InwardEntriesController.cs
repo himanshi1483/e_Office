@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using e_Office.Models;
+using System;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using e_Office.Models;
 
 namespace e_Office.Controllers
 {
@@ -40,11 +38,19 @@ namespace e_Office.Controllers
         {
             var model = new InwardEntry();
             ViewBag.SendToDept = new SelectList(db.DeptMasters, "DeptId", "DeptName", model.SendToDept);
-            ViewBag.SendToCC = new SelectList(db.UserDetails, "UserDetailId", "EmailAddress", model.SendToCC);
-            ViewBag.SendToUser = new SelectList(db.UserDetails, "UserDetailId", "EmailAddress", model.SendToUser);
+            var users = db.UserDetails.Select(s => new
+            {
+                UserDetailId = s.UserDetailId,
+                FullName = s.FirstName + " " + s.LastName
+            }).ToList();
+
+            ViewBag.SendToCC = new SelectList(users, "UserDetailId", "FullName", model.SendToCC);
+            ViewBag.SendToUser = new SelectList(users, "UserDetailId", "FullName", model.SendToUser);
             ViewBag.Classification = new SelectList(db.ClassificationMasters, "ClassificationId", "ClassificationName", model.Classification);
             return View(model);
         }
+
+       
 
         // POST: InwardEntries/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -57,9 +63,16 @@ namespace e_Office.Controllers
             {
                 db.InwardEntries.Add(inwardEntry);
                 db.SaveChanges();
-                ViewBag.DeptId = new SelectList(db.DeptMasters, "DeptId", "DeptName", inwardEntry.SendToDept);
-                ViewBag.Classification = new SelectList(db.ClassificationMasters, "ClassificationId", "ClassificationName", inwardEntry.Classification);
+                ViewBag.SendToDept = new SelectList(db.DeptMasters, "DeptId", "DeptName", inwardEntry.SendToDept);
+                var users = db.UserDetails.Select(s => new
+                {
+                    UserDetailId = s.UserDetailId,
+                    FullName = s.FirstName + " " + s.LastName
+                }).ToList();
 
+                ViewBag.SendToCC = new SelectList(users, "UserDetailId", "FullName", inwardEntry.SendToCC);
+                ViewBag.SendToUser = new SelectList(users, "UserDetailId", "FullName", inwardEntry.SendToUser);
+                ViewBag.Classification = new SelectList(db.ClassificationMasters, "ClassificationId", "ClassificationName", inwardEntry.Classification);
                 return RedirectToAction("Index");
             }
 
@@ -74,9 +87,16 @@ namespace e_Office.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             InwardEntry inwardEntry = db.InwardEntries.Find(id);
-            ViewBag.DeptId = new SelectList(db.DeptMasters, "DeptId", "DeptName", inwardEntry.SendToDept);
-            ViewBag.Classification = new SelectList(db.ClassificationMasters, "ClassificationId", "ClassificationName", inwardEntry.Classification);
+            ViewBag.SendToDept = new SelectList(db.DeptMasters, "DeptId", "DeptName", inwardEntry.SendToDept);
+            var users = db.UserDetails.Select(s => new
+                            {
+                                UserDetailId = s.UserDetailId,
+                                FullName = s.FirstName + " " + s.LastName
+                            }).ToList();
 
+            ViewBag.SendToCC = new SelectList(users, "UserDetailId", "FullName", inwardEntry.SendToCC);
+            ViewBag.SendToUser = new SelectList(users, "UserDetailId", "FullName", inwardEntry.SendToUser);
+            ViewBag.Classification = new SelectList(db.ClassificationMasters, "ClassificationId", "ClassificationName", inwardEntry.Classification);
             if (inwardEntry == null)
             {
                 return HttpNotFound();
@@ -98,7 +118,15 @@ namespace e_Office.Controllers
 
                 return RedirectToAction("Index");
             }
-            ViewBag.DeptId = new SelectList(db.DeptMasters, "DeptId", "DeptName", inwardEntry.SendToDept);
+            ViewBag.SendToDept = new SelectList(db.DeptMasters, "DeptId", "DeptName", inwardEntry.SendToDept);
+            var users = db.UserDetails.Select(s => new
+            {
+                UserDetailId = s.UserDetailId,
+                FullName = s.FirstName + " " + s.LastName
+            }).ToList();
+
+            ViewBag.SendToCC = new SelectList(users, "UserDetailId", "FullName", inwardEntry.SendToCC);
+            ViewBag.SendToUser = new SelectList(users, "UserDetailId", "FullName", inwardEntry.SendToUser);
             ViewBag.Classification = new SelectList(db.ClassificationMasters, "ClassificationId", "ClassificationName", inwardEntry.Classification);
 
             return View(inwardEntry);

@@ -41,14 +41,17 @@ namespace e_Office.Models
         [Display(Name = "Send to User")]
         public int SendToUser { get; set; }
 
-        [ForeignKey("SendToCC")]
-        public virtual UserDetails UserDetails { get; set; }
+        //[ForeignKey("SendToCC")]
+        //public virtual ICollection<UserDetails> UserDetails { get; set; }
+
+       // [ForeignKey("SendToCC")]
+        //public virtual UserDetails UserDetails { get; set; }
 
         [ForeignKey("SendToUser")]
         public virtual UserDetails UserDetails1 { get; set; }
 
         [Display(Name = "CC")]
-        public int SendToCC { get; set; }
+        public List<int> SendToCC { get; set; }
 
       
     }

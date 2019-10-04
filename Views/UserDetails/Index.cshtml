@@ -12,61 +12,64 @@
                 <div class="card-body">
                     <h5 class="card-title m-b-0">Users</h5>
                 </div>
-                <table class="table">
-                    <tr>
-                        
-                        <th>
-                            @Html.DisplayNameFor(model => model.FirstName)
-                        </th>
-                     
-                        <th>
-                            @Html.DisplayNameFor(model => model.LastName)
-                        </th>
-                      
-                        <th>
-                            @Html.DisplayNameFor(model => model.DeptId)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.DesignationId)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.AuthorityId)
-                        </th>
-                    
-                        <th></th>
-                    </tr>
-
-                    @foreach (var item in Model)
-                    {
+                @if (Model.Count() > 0)
+                {
+                    <table class="table table-bordered" style="width:98%;margin:10px;">
                         <tr>
-                         
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FirstName)
-                            </td>
-                          
-                            <td>
-                                @Html.DisplayFor(modelItem => item.LastName)
-                            </td>
-                          
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DeptId)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DesignationId)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.AuthorityId)
-                            </td>
-                          
-                            <td>
-                                @Html.ActionLink("Edit", "Edit", new { id = item.UserDetailId }) |
-                                @Html.ActionLink("Details", "Details", new { id = item.UserDetailId }) |
-                                @Html.ActionLink("Delete", "Delete", new { id = item.UserDetailId })
-                            </td>
-                        </tr>
-                    }
 
-                </table>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FirstName)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.LastName)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.DeptId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.DesignationId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.AuthorityId)
+                            </th>
+
+                            <th></th>
+                        </tr>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FirstName)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LastName)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Department.DeptName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Designation.DesignationName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Authority.AuthorityName)
+                                </td>
+
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.UserDetailId }) |
+                                    @Html.ActionLink("Details", "Details", new { id = item.UserDetailId }) |
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.UserDetailId })
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                }
                 </div>
             </div>
         </div>
