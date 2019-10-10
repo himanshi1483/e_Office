@@ -13,13 +13,19 @@ namespace e_Office.Models
         public int InwardId { get; set; }
         [Display(Name ="Upload File")]
         public string DocumentLocation { get; set; }
+
+        public string DocumentName { get; set; }
         [Display(Name = "Inward No.")]
         public string InwardNumber { get; set; }
         [Display(Name = "Inward Date")]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? InwardDate { get; set; }
         public string Subject { get; set; }
         public string From { get; set; }
         [Display(Name = "Due Date")]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DueDate { get; set; }
         public string Action { get; set; }
         public string Priority { get; set; }
@@ -51,8 +57,9 @@ namespace e_Office.Models
         public virtual UserDetails UserDetails1 { get; set; }
 
         [Display(Name = "CC")]
+        [NotMapped]
         public List<int> SendToCC { get; set; }
+        public string CC { get; set; }
 
-      
     }
 }

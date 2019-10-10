@@ -19,9 +19,6 @@ namespace e_Office.Controllers
     public class InwardEntriesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        private readonly DriveService _service;
-        private static string _clientID = "386766609952-jg6mglmbo59qr0jam0bsvg4235lknm7q.apps.googleusercontent.com";
-        private static string _clientSecret = "g9b-RPF7j32WnVGal3x79pRn";
         static string[] Scopes = { DriveService.Scope.Drive, DriveService.Scope.DriveFile, DriveService.Scope.DriveMetadata, DriveService.Scope.DriveAppdata };
         static string ApplicationName = "e-Office";
 
@@ -72,7 +69,7 @@ namespace e_Office.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(InwardEntry inwardEntry, HttpPostedFileBase file)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && file != null)
             {
                 UserCredential credential;
                 string credPath1 = @"~\Documents\credentials.json";
@@ -101,23 +98,24 @@ namespace e_Office.Controllers
                 var exten = Path.GetExtension(file.FileName);
                 var docPath = SaveToDrive(file);
                 inwardEntry.DocumentLocation= docPath;
-
+                inwardEntry.DocumentName = fileName;
+                inwardEntry.CC = string.Join(",", inwardEntry.SendToCC);
                 db.InwardEntries.Add(inwardEntry);
                 db.SaveChanges();
 
-                ViewBag.SendToDept = new SelectList(db.DeptMasters, "DeptId", "DeptName", inwardEntry.SendToDept);
-                var users = db.UserDetails.Select(s => new
-                {
-                    UserDetailId = s.UserDetailId,
-                    FullName = s.FirstName + " " + s.LastName
-                }).ToList();
-
-                ViewBag.SendToCC = new SelectList(users, "UserDetailId", "FullName", inwardEntry.SendToCC);
-                ViewBag.SendToUser = new SelectList(users, "UserDetailId", "FullName", inwardEntry.SendToUser);
-                ViewBag.Classification = new SelectList(db.ClassificationMasters, "ClassificationId", "ClassificationName", inwardEntry.Classification);
                 return RedirectToAction("Index");
             }
 
+            ViewBag.SendToDept = new SelectList(db.DeptMasters, "DeptId", "DeptName", inwardEntry.SendToDept);
+            var users = db.UserDetails.Select(s => new
+            {
+                UserDetailId = s.UserDetailId,
+                FullName = s.FirstName + " " + s.LastName
+            }).ToList();
+
+            ViewBag.SendToCC = new SelectList(users, "UserDetailId", "FullName", inwardEntry.SendToCC);
+            ViewBag.SendToUser = new SelectList(users, "UserDetailId", "FullName", inwardEntry.SendToUser);
+            ViewBag.Classification = new SelectList(db.ClassificationMasters, "ClassificationId", "ClassificationName", inwardEntry.Classification);
             return View(inwardEntry);
         }
 
@@ -146,7 +144,7 @@ namespace e_Office.Controllers
                 ApplicationName = ApplicationName,
             });
 
-            string _parent = "";
+            string _parent = "1licsmd8Lz5OZ2ROE9wEcW1sw1IiY4uGi";
             Google.Apis.Drive.v3.Data.File body = new Google.Apis.Drive.v3.Data.File();
             body.Name = System.IO.Path.GetFileName(file1.FileName);
             body.Description = "Inward Entry Doc";
@@ -227,7 +225,6 @@ namespace e_Office.Controllers
                 HttpClientInitializer = credential,
                 ApplicationName = ApplicationName,
             });
-            Google.Apis.Drive.v3.Data.File NewDirectory = null;
             string _parent = "AppFolder";
             // Create metaData for a new Directory
             Google.Apis.Drive.v3.Data.File body = new Google.Apis.Drive.v3.Data.File();
@@ -243,9 +240,9 @@ namespace e_Office.Controllers
             //   public static DriveService serv2 = new DriveService();
             try
             {
-                Google.Apis.Drive.v3.FilesResource.ListRequest checkDirectory = _service.Files.List();
+                //Google.Apis.Drive.v3.FilesResource.ListRequest checkDirectory = _service.Files.List();
                 FilesResource.CreateRequest request = service.Files.Create(body);
-                NewDirectory = request.Execute();
+                Google.Apis.Drive.v3.Data.File NewDirectory = request.Execute();
                 return NewDirectory.Id;
             }
             catch (Exception e)
@@ -295,6 +292,7 @@ namespace e_Office.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             InwardEntry inwardEntry = db.InwardEntries.Find(id);
+
             ViewBag.SendToDept = new SelectList(db.DeptMasters, "DeptId", "DeptName", inwardEntry.SendToDept);
             var users = db.UserDetails.Select(s => new
                             {
@@ -302,7 +300,7 @@ namespace e_Office.Controllers
                                 FullName = s.FirstName + " " + s.LastName
                             }).ToList();
 
-            ViewBag.SendToCC = new SelectList(users, "UserDetailId", "FullName", inwardEntry.SendToCC);
+            ViewBag.SendToCC = new SelectList(users, "UserDetailId", "FullName", inwardEntry.CC);
             ViewBag.SendToUser = new SelectList(users, "UserDetailId", "FullName", inwardEntry.SendToUser);
             ViewBag.Classification = new SelectList(db.ClassificationMasters, "ClassificationId", "ClassificationName", inwardEntry.Classification);
             if (inwardEntry == null)
@@ -317,10 +315,43 @@ namespace e_Office.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "InwardId,DocumentLocation,InwardNumber,InwardDate,Subject,SendToDept,SendToUser,SendToCC,From,DueDate,Action,Priority,Classification,Remarks,Tags")] InwardEntry inwardEntry)
+        public ActionResult Edit(InwardEntry inwardEntry, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
+                UserCredential credential;
+                string credPath1 = @"~\Documents\credentials.json";
+                using (var stream =
+                     new FileStream(Server.MapPath(credPath1), FileMode.Open, FileAccess.ReadWrite))
+                {
+                    // The file token.json stores the user's access and refresh tokens, and is created
+                    // automatically when the authorization flow completes for the first time.
+                    string credPath = Server.MapPath(@"~\Documents\token.json");
+                    //credential = GoogleWebAuthorizationBroker.AuthorizeAsync(GoogleClientSecrets.Load(stream).Secrets, Scopes,"admin", CancellationToken.None, new FileDataStore("MyAppsToken"))
+                    credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                        GoogleClientSecrets.Load(stream).Secrets,
+                        Scopes,
+                        "admin",
+                        CancellationToken.None,
+                        new FileDataStore(credPath, false)).Result;
+                    Console.WriteLine("Credential file saved to: " + credPath);
+                }
+                // Create Drive API service.
+                var service = new DriveService(new BaseClientService.Initializer()
+                {
+                    HttpClientInitializer = credential,
+                    ApplicationName = ApplicationName,
+                });
+                if (file.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    var exten = Path.GetExtension(file.FileName);
+                    var docPath = SaveToDrive(file);
+                    inwardEntry.DocumentLocation = docPath;
+                    inwardEntry.DocumentName = fileName;
+                }
+              
+                inwardEntry.CC = string.Join(",", inwardEntry.SendToCC);
                 db.Entry(inwardEntry).State = EntityState.Modified;
                 db.SaveChanges();
 
@@ -333,7 +364,7 @@ namespace e_Office.Controllers
                 FullName = s.FirstName + " " + s.LastName
             }).ToList();
 
-            ViewBag.SendToCC = new SelectList(users, "UserDetailId", "FullName", inwardEntry.SendToCC);
+            ViewBag.SendToCC = new SelectList(users, "UserDetailId", "FullName", inwardEntry.CC);
             ViewBag.SendToUser = new SelectList(users, "UserDetailId", "FullName", inwardEntry.SendToUser);
             ViewBag.Classification = new SelectList(db.ClassificationMasters, "ClassificationId", "ClassificationName", inwardEntry.Classification);
 

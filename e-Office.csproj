@@ -54,6 +54,9 @@
     <Reference Include="Google.Apis.Auth.PlatformServices, Version=1.41.1.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
       <HintPath>packages\Google.Apis.Auth.1.41.1\lib\net45\Google.Apis.Auth.PlatformServices.dll</HintPath>
     </Reference>
+    <Reference Include="Google.Apis.Calendar.v3, Version=1.41.1.1732, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.Calendar.v3.1.41.1.1732\lib\net45\Google.Apis.Calendar.v3.dll</HintPath>
+    </Reference>
     <Reference Include="Google.Apis.Core, Version=1.41.1.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
       <HintPath>packages\Google.Apis.Core.1.41.1\lib\net45\Google.Apis.Core.dll</HintPath>
     </Reference>
@@ -196,6 +199,7 @@
     <Compile Include="Controllers\DeptMastersController.cs" />
     <Compile Include="Controllers\DesignationMastersController.cs" />
     <Compile Include="Controllers\DistrictMastersController.cs" />
+    <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InwardEntriesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -259,11 +263,20 @@
     <Compile Include="Migrations\201910041117384_init10.Designer.cs">
       <DependentUpon>201910041117384_init10.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201910100655412_init11.cs" />
+    <Compile Include="Migrations\201910100655412_init11.Designer.cs">
+      <DependentUpon>201910100655412_init11.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910100727080_init12.cs" />
+    <Compile Include="Migrations\201910100727080_init12.Designer.cs">
+      <DependentUpon>201910100727080_init12.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\DesignationMaster.cs" />
     <Compile Include="Models\EnumModel.cs" />
+    <Compile Include="Models\EventCalendar.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\InwardEntry.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -1360,6 +1373,7 @@
     <Content Include="Views\UserLogs\Edit.cshtml" />
     <Content Include="Views\UserLogs\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
+    <Content Include="Views\Event\UpcomingEvents.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1413,6 +1427,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910041117384_init10.resx">
       <DependentUpon>201910041117384_init10.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910100655412_init11.resx">
+      <DependentUpon>201910100655412_init11.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910100727080_init12.resx">
+      <DependentUpon>201910100727080_init12.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
