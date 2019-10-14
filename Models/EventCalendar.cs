@@ -12,13 +12,13 @@ namespace e_Office.Models
         [Key]
         public int EventId { get; set; }
 
-        public EventDateTime EventStart { get; set; }
-        public EventDateTime EventEnd { get; set; }
-
+        public DateTime? EventStart { get; set; }
+        public DateTime? EventEnd { get; set; }
+        public string EventName { get; set; }
         public string Description { get; set; }
         public string Location { get; set; }
         public string Status { get; set; }
-        public List<EventAttendee> Attendees { get; set; }
+        public List<string> Attendees { get; set; }
     }
 
     public class UpcomingEventsViewModel
@@ -28,6 +28,8 @@ namespace e_Office.Models
         /// </summary>
         [Required]
         public IEnumerable<CalendarEventGroup> EventGroups { get; set; }
+
+        public EventCalendar NewEvent { get; set; }
     }
 
     public class CalendarEventGroup

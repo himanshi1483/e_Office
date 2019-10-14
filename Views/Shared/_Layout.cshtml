@@ -22,6 +22,7 @@
     <link href="~/Content/theme/assets/libs/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" />
     <link href="~/Content/theme/assets/extra-libs/calendar/calendar.css" rel="stylesheet" />
     <link href="~/Content/theme/dist/css/style.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-tagsinput.css" rel="stylesheet" />
 </head>
 <body>
     <!-- ============================================================== -->
@@ -226,6 +227,9 @@
                                 <li class="sidebar-item"><a href="@Url.Action("Index", "StdHeadMasters")" class="sidebar-link"><i class="mdi mdi-note-plus"></i><span class="hide-menu"> Standard Heads </span></a></li>
                             </ul>
                         </li>
+
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("UpcomingEvents", "Event")" aria-expanded="false"><i class="mdi mdi-calendar"></i><span class="hide-menu">Event Calendar</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("Index", "TaskModels")" aria-expanded="false"><i class="mdi mdi-calendar-check"></i><span class="hide-menu">To-Do List</span></a></li>
                         <li class="sidebar-item">
                             <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-account-key"></i><span class="hide-menu">Authentication </span></a>
                             <ul aria-expanded="false" class="collapse  first-level">
@@ -258,7 +262,7 @@
                 <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
             </footer>*@
     </div>
-
+    @*<script src="~/Scripts/jquery-3.3.1.min.js"></script>*@
     <script src="~/Content/theme/assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="~/Content/theme/assets/libs/popper.js/dist/umd/popper.min.js"></script>
     <script src="~/Content/theme/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -269,14 +273,6 @@
     <script src="~/Content/theme/dist/js/sidebarmenu.js"></script>
     <!--Custom JavaScript -->
     <script src="~/Content/theme/dist/js/custom.min.js"></script>
-    @*<script src="~/Content/theme/assets/libs/flot/excanvas.js"></script>
-        <script src="~/Content/theme/assets/libs/flot/jquery.flot.js"></script>
-        <script src="~/Content/theme/assets/libs/flot/jquery.flot.pie.js"></script>
-        <script src="~/Content/theme/assets/libs/flot/jquery.flot.time.js"></script>
-        <script src="~/Content/theme/assets/libs/flot/jquery.flot.stack.js"></script>
-        <script src="~/Content/theme/assets/libs/flot/jquery.flot.crosshair.js"></script>
-        <script src="~/Content/theme/assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
-        <script src="~/Content/theme/dist/js/pages/chart/chart-page-init.js"></script>*@
     <script src="~/Content/theme/assets/libs/moment/min/moment.min.js"></script>
 
     <script src="~/Content/theme/assets/libs/fullcalendar/dist/fullcalendar.min.js"></script>
@@ -284,6 +280,7 @@
     <script src="~/Content/theme/assets/libs/select2/dist/js/select2.full.min.js"></script>
     <script src="~/Content/theme/assets/libs/select2/dist/js/select2.min.js"></script>
     <script src="~/Content/theme/assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/Content/bootstrap-tagsinput.min.js"></script>
     @RenderSection("scripts", required: false)
     <script>
         $(".select2").select2();

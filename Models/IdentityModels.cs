@@ -59,7 +59,8 @@ namespace e_Office.Models
         }
 
         public DbSet<CategoryMaster> CategoryMasters { get; set; }
-
+        public DbSet<TaskModel> TaskModel { get; set; }
+        public DbSet<EventCalendar> EventCalendar { get; set; }
         public System.Data.Entity.DbSet<e_Office.Models.AuthorityMaster> AuthorityMasters { get; set; }
 
         public System.Data.Entity.DbSet<e_Office.Models.ClassificationMaster> ClassificationMasters { get; set; }

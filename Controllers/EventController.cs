@@ -47,8 +47,9 @@ namespace e_Office.Controllers
     }
     public class EventController : Controller
     {
-      //  static string[] Scopes = {CalendarService.Scope.Calendar, CalendarService.Scope.CalendarEvents };
+        //  static string[] Scopes = {CalendarService.Scope.Calendar, CalendarService.Scope.CalendarEvents };
         static string ApplicationName = "e-Office";
+        ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Event
         public ActionResult Index()
@@ -80,7 +81,7 @@ namespace e_Office.Controllers
         }
 
 
-        public async Task<ActionResult> UpcomingEvents()
+        public ActionResult UpcomingEvents()
         {
             UserCredential credential;
             string credPath1 = @"~\Documents\credentials.json";
@@ -103,56 +104,56 @@ namespace e_Office.Controllers
                 ApplicationName = ApplicationName,
             });
 
-            const int MaxEventsPerCalendar = 20;
-            const int MaxEventsOverall = 50;
+            //const int MaxEventsPerCalendar = 20;
+            //const int MaxEventsOverall = 50;
 
             var model = new UpcomingEventsViewModel();
 
-           // Fetch the list of calendars.
-            var calendars = await service.CalendarList.List().ExecuteAsync();
+            // Fetch the list of calendars.
+            //var calendars = service.CalendarList.List().Execute();
 
-            // Fetch some events from each calendar.
-            var fetchTasks = new List<Task<Google.Apis.Calendar.v3.Data.Events>>(calendars.Items.Count);
-            foreach (var calendar in calendars.Items)
-            {
-                var request = service.Events.List(calendar.Id);
-                request.MaxResults = MaxEventsPerCalendar;
-                request.SingleEvents = true;
-                request.TimeMin = DateTime.Now;
-                fetchTasks.Add(request.ExecuteAsync());
-            }
-            var fetchResults = await Task.WhenAll(fetchTasks);
+            //Fetch some events from each calendar.
+            //var fetchTasks = new List<Task<Google.Apis.Calendar.v3.Data.Events>>(calendars.Items.Count);
+            //foreach (var calendar in calendars.Items)
+            //{
+            //    var request = service.Events.List(calendar.Id);
+            //    request.MaxResults = MaxEventsPerCalendar;
+            //    request.SingleEvents = true;
+            //    request.TimeMin = DateTime.Now;
+            //    fetchTasks.Add(request.Execute());
+            //}
+            //var fetchResults = fetchTasks;
+            //Sort the events and put them in the model.
+            //var upcomingEvents = from result in fetchResults
+            //                     from evt in result.Items
+            //                     where evt.Start != null
+            //                     let date = evt.Start.DateTime.HasValue ?
+            //                         evt.Start.DateTime.Value.Date :
+            //                         DateTime.ParseExact(evt.Start.Date, "yyyy-MM-dd", null)
+            //                     let sortKey = evt.Start.DateTimeRaw ?? evt.Start.Date
+            //                     orderby sortKey
+            //                     select new { evt, date };
+            //var eventsByDate = from result in upcomingEvents.Take(MaxEventsOverall)
+            //                   group result.evt by result.date into g
+            //                   orderby g.Key
+            //                   select g;
 
-            // Sort the events and put them in the model.
-            var upcomingEvents = from result in fetchResults
-                                 from evt in result.Items
-                                 where evt.Start != null
-                                 let date = evt.Start.DateTime.HasValue ?
-                                     evt.Start.DateTime.Value.Date :
-                                     DateTime.ParseExact(evt.Start.Date, "yyyy-MM-dd", null)
-                                 let sortKey = evt.Start.DateTimeRaw ?? evt.Start.Date
-                                 orderby sortKey
-                                 select new { evt, date };
-            var eventsByDate = from result in upcomingEvents.Take(MaxEventsOverall)
-                               group result.evt by result.date into g
-                               orderby g.Key
-                               select g;
+            //var eventGroups = new List<CalendarEventGroup>();
+            //foreach (var grouping in eventsByDate)
+            //{
+            //    eventGroups.Add(new CalendarEventGroup
+            //    {
+            //        GroupTitle = grouping.Key.ToLongDateString(),
+            //        Events = grouping,
+            //    });
+            //}
 
-            var eventGroups = new List<CalendarEventGroup>();
-            foreach (var grouping in eventsByDate)
-            {
-                eventGroups.Add(new CalendarEventGroup
-                {
-                    GroupTitle = grouping.Key.ToLongDateString(),
-                    Events = grouping,
-                });
-            }
-
-            model.EventGroups = eventGroups;
+           // model.EventGroups = eventGroups;
             return View(model);
         }
 
-        public async Task<ActionResult> AddEvent(EventCalendar model)
+        [HttpPost]
+        public ActionResult AddEvent(UpcomingEventsViewModel model)
         {
             UserCredential credential;
             string credPath1 = @"~\Documents\credentials.json";
@@ -163,7 +164,7 @@ namespace e_Office.Controllers
                 credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,
                     CalendarScopes.Scopes,
-                    "user",
+                    "owner",
                     CancellationToken.None,
                     new FileDataStore(credPath, false)).Result;
                 Console.WriteLine("Credential file saved to: " + credPath);
@@ -176,16 +177,56 @@ namespace e_Office.Controllers
             });
 
             var _event = new Event();
-            _event.Start = model.EventStart;
-            _event.End = model.EventEnd;
-            _event.Status = model.Status;
-            _event.Attendees = model.Attendees;
-            _event.Description = model.Description;
+            _event.Start = new EventDateTime()
+            {
+                DateTime = DateTime.Parse(model.NewEvent.EventStart.Value.ToLongDateString()),
+                TimeZone = "Asia/Kolkata"
+            };
+            _event.End = new EventDateTime()
+            {
+                DateTime = DateTime.Parse(model.NewEvent.EventEnd.Value.ToLongDateString()),
+                TimeZone = "Asia/Kolkata"
+            };
+            var _list = new List<EventAttendee>();
+            if (model.NewEvent.Attendees[0] == "")
+            {
+                var att = new EventAttendee()
+                {
+                    Email = "support@aarushsystems.com"
+                };
+                _list.Add(att);               
+            }
+            else
+            {
+                foreach (var item in model.NewEvent.Attendees[0].Split(','))
+                {
+                    var attendee = new EventAttendee();
+                    attendee.Email = item;
+                    _list.Add(attendee);
+                }
+            }
+            _event.Attendees = _list;
+           
+            _event.Description = model.NewEvent.Description;
             _event.GuestsCanSeeOtherGuests = true;
-            _event.Location = model.Location;
+            //_event.Location = model.NewEvent.Location;
             _event.Kind = "calendar#event";
+            _event.Summary = model.NewEvent.EventName;
+            _event.ColorId = "4";
+            _event.Reminders = new Event.RemindersData()
+            {
+                UseDefault = false,
+                Overrides = new EventReminder[] {
+            new EventReminder() { Method = "email", Minutes = 24 * 60 }
+                }
+            };
+            //var result = service.Events.Insert(_event, "support@aarushsystems.com");
+            EventsResource.InsertRequest request = service.Events.Insert(_event, "support@aarushsystems.com");
+            Event createdEvent = request.Execute();
 
-           service.Events.Insert(_event, "primary");
+            db.EventCalendar.Add(model.NewEvent);
+            db.SaveChanges();
+            return View("UpcomingEvents");
 
         }
     }

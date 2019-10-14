@@ -1,4 +1,5 @@
-﻿using System;
+﻿using e_Office.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,9 +9,13 @@ namespace e_Office.Controllers
 {
     public class HomeController : Controller
     {
+        ApplicationDbContext db = new ApplicationDbContext();
         public ActionResult Index()
         {
-            return View();
+            var model = new DashboardViewModel();
+            model.TaskList = new List<TaskModel>();
+            model.TaskList = db.TaskModel.Where(x=>x.AssignedTo == User.Identity.Name).ToList();
+            return View(model);
         }
 
         public ActionResult About()
