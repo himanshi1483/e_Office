@@ -21,8 +21,12 @@
     <link rel="stylesheet" type="text/css" href="~/Content/theme/assets/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
     <link href="~/Content/theme/assets/libs/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" />
     <link href="~/Content/theme/assets/extra-libs/calendar/calendar.css" rel="stylesheet" />
-    <link href="~/Content/theme/dist/css/style.min.css" rel="stylesheet" />
+    <link href="~/Content/theme/dist/css/style.css" rel="stylesheet" />
     <link href="~/Content/bootstrap-tagsinput.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/Content/theme/assets/libs/quill/dist/quill.snow.css">
+    <script src="~/Content/theme/assets/libs/jquery/dist/jquery.min.js"></script>
+    @Styles.Render("~/Content/docuvieware")
+    @Scripts.Render("~/bundles/docuvieware")
 </head>
 <body>
     <!-- ============================================================== -->
@@ -263,7 +267,7 @@
             </footer>*@
     </div>
     @*<script src="~/Scripts/jquery-3.3.1.min.js"></script>*@
-    <script src="~/Content/theme/assets/libs/jquery/dist/jquery.min.js"></script>
+
     <script src="~/Content/theme/assets/libs/popper.js/dist/umd/popper.min.js"></script>
     <script src="~/Content/theme/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="~/Content/theme/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
@@ -281,6 +285,7 @@
     <script src="~/Content/theme/assets/libs/select2/dist/js/select2.min.js"></script>
     <script src="~/Content/theme/assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     <script src="~/Content/bootstrap-tagsinput.min.js"></script>
+    <script src="~/Content/theme/assets/libs/quill/dist/quill.min.js"></script>
     @RenderSection("scripts", required: false)
     <script>
         $(".select2").select2();
@@ -291,6 +296,14 @@
             todayHighlight: true,
             orientation: "bottom"
         });
+         var quill = new Quill('#editor', {
+            theme: 'snow'
+         });
+
+          var quill1 = new Quill('#editor1', {
+            theme: 'snow'
+        });
+
 
     </script>
 </body>

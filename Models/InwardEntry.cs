@@ -47,12 +47,6 @@ namespace e_Office.Models
         [Display(Name = "Send to User")]
         public int SendToUser { get; set; }
 
-        //[ForeignKey("SendToCC")]
-        //public virtual ICollection<UserDetails> UserDetails { get; set; }
-
-       // [ForeignKey("SendToCC")]
-        //public virtual UserDetails UserDetails { get; set; }
-
         [ForeignKey("SendToUser")]
         public virtual UserDetails UserDetails1 { get; set; }
 
@@ -61,5 +55,9 @@ namespace e_Office.Models
         public List<int> SendToCC { get; set; }
         public string CC { get; set; }
 
+        public string CreatedBy { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public string UpdatedBy { get; set; }
+        public DateTime? UpdatedOn { get; set; }
     }
 }

@@ -24,6 +24,9 @@ namespace e_Office
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/theme/dist/styles.min.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/docuvieware").Include("~/Content/docuvieware-min.js"));
+            bundles.Add(new StyleBundle("~/Content/docuvieware").Include("~/Content/docuvieware-min.css"));
         }
     }
 }

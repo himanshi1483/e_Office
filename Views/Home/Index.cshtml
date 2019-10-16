@@ -96,7 +96,7 @@
                 <h4 class="card-title">To Do List</h4>
                 <div class="todo-widget scrollable" style="height:450px;">
                     <ul class="list-task todo-list list-group m-b-0" data-role="tasklist">
-                        @foreach (var item in Model.TaskList.Where(x=>x.IsComplete == false))
+                        @foreach (var item in Model.TaskList.Where(x => x.IsComplete == false))
                         {
                             <li class="list-group-item todo-item" data-role="task">
                                 @using (Html.BeginForm("UpdateTask", "TaskModels", new { @id = item.TaskId }))
@@ -338,11 +338,12 @@
     </div>
 </div>
 <script src="~/Content/theme/assets/libs/jquery/dist/jquery.min.js"></script>
-
+@Styles.Render("~/Content/docuvieware")
+@Scripts.Render("~/bundles/docuvieware")
 <script>
     $('.taskbox ').click(function () {
         var inputId = $(this).attr('id');
-       // alert($(this).attr('id'));  //-->this will alert id of checked checkbox.
+        // alert($(this).attr('id'));  //-->this will alert id of checked checkbox.
         var _id = inputId.substring(6);
         if (this.checked) {
             $.ajax({
@@ -350,13 +351,13 @@
                 url: "/TaskModels/UpdateTask/" + _id,
                 data: _id, //--> send id of checked checkbox on other page
                 success: function (data) {
-               
+
                 },
                 error: function () {
-                 
+
                 },
                 complete: function () {
-                 
+
                 }
             });
 

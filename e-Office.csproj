@@ -45,6 +45,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GdPicture.NET.14.WEB.DocuVieware">
+      <HintPath>..\..\..\..\GdPicture.NET 14\Redist\DocuVieware (.NET Framework 4.6)\GdPicture.NET.14.WEB.DocuVieware.dll</HintPath>
+    </Reference>
     <Reference Include="Google.Apis, Version=1.41.1.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
       <HintPath>packages\Google.Apis.1.41.1\lib\net45\Google.Apis.dll</HintPath>
     </Reference>
@@ -73,12 +76,21 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -300,6 +312,18 @@
     <Compile Include="Migrations\201910140857359_init18.Designer.cs">
       <DependentUpon>201910140857359_init18.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201910160719287_init171.cs" />
+    <Compile Include="Migrations\201910160719287_init171.Designer.cs">
+      <DependentUpon>201910160719287_init171.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910161128037_init181.cs" />
+    <Compile Include="Migrations\201910161128037_init181.Designer.cs">
+      <DependentUpon>201910161128037_init181.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910161128347_init19.cs" />
+    <Compile Include="Migrations\201910161128347_init19.Designer.cs">
+      <DependentUpon>201910161128347_init19.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Category.cs" />
@@ -309,6 +333,7 @@
     <Compile Include="Models\EventCalendar.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\InwardEntry.cs" />
+    <Compile Include="Models\InwardNotes.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Task.cs" />
     <Compile Include="Models\UserLogs.cs" />
@@ -322,6 +347,8 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\docuvieware-min.css" />
+    <Content Include="Content\docuvieware-min.js" />
     <Content Include="Content\theme\assets\extra-libs\calendar\calendar.css" />
     <Content Include="Content\theme\assets\extra-libs\DataTables\DataTables-1.10.16\css\dataTables.bootstrap.css" />
     <Content Include="Content\theme\assets\extra-libs\DataTables\DataTables-1.10.16\css\dataTables.bootstrap.min.css" />
@@ -1082,8 +1109,33 @@
     <Content Include="Content\theme\html\ltr\pages-invoice.html" />
     <Content Include="Content\theme\html\ltr\tables.html" />
     <Content Include="Content\theme\html\ltr\widgets.html" />
+    <Content Include="Documents\CACHE\HtmlPage1.html" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="GdPicture.NET.14.filters.64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GdPicture.NET.14.filters.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GdPicture.NET.14.image.gdimgplug.64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GdPicture.NET.14.image.gdimgplug.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GdPicture.NET.14.Imaging.Rendering.Skia.64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GdPicture.NET.14.Imaging.Rendering.Skia.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GdPicture.NET.14.jbig2.encoder.64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GdPicture.NET.14.jbig2.encoder.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\1.jpg" />
@@ -1275,6 +1327,7 @@
     <Content Include="Content\theme\dist\css\icons\weather-icons\sass\weather-icons.scss" />
     <Content Include="Documents\credentials.json" />
     <Content Include="credentials.json" />
+    <Content Include="Documents\Bakri Id.pdf" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -1413,9 +1466,11 @@
     <Content Include="Views\TaskModels\Details.cshtml" />
     <Content Include="Views\TaskModels\Edit.cshtml" />
     <Content Include="Views\TaskModels\Index.cshtml" />
+    <Content Include="Views\InwardEntries\ViewFile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Documents\Temp\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -1493,6 +1548,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910140857359_init18.resx">
       <DependentUpon>201910140857359_init18.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910160719287_init171.resx">
+      <DependentUpon>201910160719287_init171.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910161128037_init181.resx">
+      <DependentUpon>201910161128037_init181.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910161128347_init19.resx">
+      <DependentUpon>201910161128347_init19.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

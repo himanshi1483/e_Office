@@ -1,0 +1,64 @@
+﻿@model e_Office.Models.InwardEntry
+@using GdPicture14.WEB
+@using GdPicture14
+@{
+    ViewBag.Title = "View File";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title m-b-0">View Inward Entry</h5>
+            </div>
+            <div class="card-body">
+                <div>
+                    <button class="btn btn-success btn-sm">Add Green Note</button>
+                    <button class="btn btn-warning btn-sm">Add Yellow Note</button>
+                </div>
+                <div class="card" id="note1">
+                    <div class="card-body">
+                        <h4 class="card-title">Green Note</h4>
+                        <!-- Create the editor container -->
+                        <div id="editor" style="height: 300px;background-color:#aae4c0">
+                            <p>Hello World!</p>
+                            <p>Some initial <strong>bold</strong> text</p>
+                            <p>
+                                <br>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" id="note2">
+                    <div class="card-body">
+                        <h4 class="card-title">Yellow Note</h4>
+                        <!-- Create the editor container -->
+                        <div id="editor1" style="height: 300px;background-color:#f6e585">
+                            <p>Hello World!</p>
+                            <p>Some initial <strong>bold</strong> text</p>
+                            <p>
+                                <br>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                @*<h5 class="card-title m-b-0">Inward Entry</h5>*@
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6" style="height: 800px; margin-top: 15px;" id="docPanel">  
+        @{
+
+            DocuVieware docuVieware1 = new DocuVieware
+            {
+                ID = "DocuVieware2",
+                Height = new System.Web.UI.WebControls.Unit("100%"),
+                Width = new System.Web.UI.WebControls.Unit("100%")
+            };
+            docuVieware1.LoadFromStream(new FileStream(Server.MapPath(@"~\Documents\Temp\" + Model.DocumentName), FileMode.Open, FileAccess.Read), true,Model.DocumentName);
+            
+            docuVieware1.RenderControl(Output);
+            docuVieware1.Dispose();
+        }
+    </div>
+</div>

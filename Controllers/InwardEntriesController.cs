@@ -1,5 +1,6 @@
 ﻿using e_Office.Models;
 using Google.Apis.Auth.OAuth2;
+using Google.Apis.Download;
 using Google.Apis.Drive.v3;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
@@ -25,7 +26,15 @@ namespace e_Office.Controllers
         // GET: InwardEntries
         public ActionResult Index()
         {
-            return View(db.InwardEntries.ToList());
+            string rootFolder = Server.MapPath(@"~\Documents\Temp\");
+            string[] files = Directory.GetFiles(rootFolder);
+            foreach (string file in files)
+            {
+                System.IO.File.Delete(file);
+            }
+            var UserDetailId = db.UserDetails.Where(x => x.Username == User.Identity.Name).Select(x => x.UserDetailId).FirstOrDefault();
+
+            return View(db.InwardEntries.Where(x=>x.SendToUser == UserDetailId).ToList());
         }
 
         // GET: InwardEntries/Details/5
@@ -100,6 +109,8 @@ namespace e_Office.Controllers
                 inwardEntry.DocumentLocation= docPath;
                 inwardEntry.DocumentName = fileName;
                 inwardEntry.CC = string.Join(",", inwardEntry.SendToCC);
+                inwardEntry.CreatedBy = User.Identity.Name;
+                inwardEntry.CreatedOn = DateTime.Now;
                 db.InwardEntries.Add(inwardEntry);
                 db.SaveChanges();
 
@@ -352,6 +363,8 @@ namespace e_Office.Controllers
                 }
               
                 inwardEntry.CC = string.Join(",", inwardEntry.SendToCC);
+                inwardEntry.UpdatedBy = User.Identity.Name;
+                inwardEntry.UpdatedOn = DateTime.Now;
                 db.Entry(inwardEntry).State = EntityState.Modified;
                 db.SaveChanges();
 
@@ -404,6 +417,83 @@ namespace e_Office.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public ActionResult ViewFile(int id, string doc)
+        {
+            UserCredential credential;
+            string credPath1 = @"~\Documents\credentials.json";
+            using (var stream =
+                 new FileStream(Server.MapPath(credPath1), FileMode.Open, FileAccess.ReadWrite))
+            {
+                // The file token.json stores the user's access and refresh tokens, and is created
+                // automatically when the authorization flow completes for the first time.
+                string credPath = Server.MapPath(@"~\Documents\token.json");
+                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.Load(stream).Secrets,
+                    Scopes,
+                    "admin",
+                    CancellationToken.None,
+                    new FileDataStore(credPath, false)).Result;
+                Console.WriteLine("Credential file saved to: " + credPath);
+            }
+            // Create Drive API service.
+            var service = new DriveService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = ApplicationName,
+            });
+
+            string savePath = Server.MapPath(@"~\Documents\Temp\");
+            DownloadGoogleFile(service, doc,savePath);
+            var model = new InwardEntry();
+            model = db.InwardEntries.Find(id);
+            return View(model);
+        }
+
+
+        public static string DownloadGoogleFile(Google.Apis.Drive.v3.DriveService service,string fileId, string savePath)
+        {
+           // string FolderPath = System.Web.HttpContext.Current.Server.MapPath("/GoogleDriveFiles/");
+            Google.Apis.Drive.v3.FilesResource.GetRequest request = service.Files.Get(fileId);
+            string FileName = request.Execute().Name;
+            string FilePath = System.IO.Path.Combine(savePath, FileName);
+            MemoryStream stream1 = new MemoryStream();
+            // Add a handler which will be notified on progress changes.
+            // It will notify on each chunk download and when the
+            // download is completed or failed.
+            request.MediaDownloader.ProgressChanged += (Google.Apis.Download.IDownloadProgress progress) =>
+            {
+                switch (progress.Status)
+                {
+                    case DownloadStatus.Downloading:
+                        {
+                            Console.WriteLine(progress.BytesDownloaded);
+                            break;
+                        }
+                    case DownloadStatus.Completed:
+                        {
+                            Console.WriteLine("Download complete.");
+                            SaveStream(stream1, FilePath);
+                            break;
+                        }
+                    case DownloadStatus.Failed:
+                        {
+                            Console.WriteLine("Download failed.");
+                            break;
+                        }
+                }
+            };
+            request.Download(stream1);
+            return FilePath;
+        }
+        // file save to server path
+        private static void SaveStream(MemoryStream stream, string FilePath)
+        {
+            using (System.IO.FileStream file = new FileStream(FilePath, FileMode.Create, FileAccess.ReadWrite))
+            {
+                stream.WriteTo(file);
+            }
         }
     }
 }
