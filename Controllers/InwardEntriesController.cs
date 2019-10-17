@@ -30,11 +30,15 @@ namespace e_Office.Controllers
             string[] files = Directory.GetFiles(rootFolder);
             foreach (string file in files)
             {
-                System.IO.File.Delete(file);
+                if (!file.Contains("DontDelete.html"))
+                {
+                    System.IO.File.Delete(file);
+
+                }
             }
             var UserDetailId = db.UserDetails.Where(x => x.Username == User.Identity.Name).Select(x => x.UserDetailId).FirstOrDefault();
 
-            return View(db.InwardEntries.Where(x=>x.SendToUser == UserDetailId).ToList());
+            return View(db.InwardEntries.Where(x => x.SendToUser == UserDetailId).ToList());
         }
 
         // GET: InwardEntries/Details/5
@@ -80,41 +84,61 @@ namespace e_Office.Controllers
         {
             if (ModelState.IsValid && file != null)
             {
-                UserCredential credential;
-                string credPath1 = @"~\Documents\credentials.json";
-                using (var stream =
-                     new FileStream(Server.MapPath(credPath1), FileMode.Open, FileAccess.ReadWrite))
-                {
-                    // The file token.json stores the user's access and refresh tokens, and is created
-                    // automatically when the authorization flow completes for the first time.
-                    string credPath = Server.MapPath(@"~\Documents\token.json");
-                    //credential = GoogleWebAuthorizationBroker.AuthorizeAsync(GoogleClientSecrets.Load(stream).Secrets, Scopes,"admin", CancellationToken.None, new FileDataStore("MyAppsToken"))
-                    credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                        GoogleClientSecrets.Load(stream).Secrets,
-                        Scopes,
-                        "admin",
-                        CancellationToken.None,
-                        new FileDataStore(credPath, false)).Result;
-                    Console.WriteLine("Credential file saved to: " + credPath);
-                }
-                // Create Drive API service.
-                var service = new DriveService(new BaseClientService.Initializer()
-                {
-                    HttpClientInitializer = credential,
-                    ApplicationName = ApplicationName,
-                });
+                //UserCredential credential;
+                //string credPath1 = Server.MapPath(@"~\Documents\credentials.json");
+                //using (var stream =
+                //     new FileStream((credPath1), FileMode.Open, FileAccess.ReadWrite))
+                //{
+                //    // The file token.json stores the user's access and refresh tokens, and is created
+                //    // automatically when the authorization flow completes for the first time.
+                //    string credPath = Server.MapPath(@"~\Documents\token.json");
+                //    //credential = GoogleWebAuthorizationBroker.AuthorizeAsync(GoogleClientSecrets.Load(stream).Secrets, Scopes,"admin", CancellationToken.None, new FileDataStore("MyAppsToken"))
+                //    credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                //        GoogleClientSecrets.Load(stream).Secrets,
+                //        Scopes,
+                //        "admin",
+                //        CancellationToken.None,
+                //        new FileDataStore(credPath, false)).Result;
+                //    Console.WriteLine("Credential file saved to: " + credPath);
+                //}
+                //// Create Drive API service.
+                //var service = new DriveService(new BaseClientService.Initializer()
+                //{
+                //    HttpClientInitializer = credential,
+                //    ApplicationName = ApplicationName,
+                //});
                 var fileName = Path.GetFileName(file.FileName);
-                var exten = Path.GetExtension(file.FileName);
+                //var exten = Path.GetExtension(file.FileName);
                 var docPath = SaveToDrive(file);
-                inwardEntry.DocumentLocation= docPath;
-                inwardEntry.DocumentName = fileName;
-                inwardEntry.CC = string.Join(",", inwardEntry.SendToCC);
-                inwardEntry.CreatedBy = User.Identity.Name;
-                inwardEntry.CreatedOn = DateTime.Now;
-                db.InwardEntries.Add(inwardEntry);
-                db.SaveChanges();
+                if (!docPath.Contains("Error"))
+                {
+                    inwardEntry.DocumentLocation = docPath;
+                    inwardEntry.DocumentName = fileName;
+                    inwardEntry.CC = string.Join(",", inwardEntry.SendToCC);
+                    inwardEntry.CreatedBy = User.Identity.Name;
+                    inwardEntry.CreatedOn = DateTime.Now;
+                    db.InwardEntries.Add(inwardEntry);
+                    db.SaveChanges();
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    inwardEntry.ErrorMsg = "File could not be uploaded. Please try again.";
+                    ViewBag.SendToDept = new SelectList(db.DeptMasters, "DeptId", "DeptName", inwardEntry.SendToDept);
+                    var users1 = db.UserDetails.Select(s => new
+                    {
+                        UserDetailId = s.UserDetailId,
+                        FullName = s.FirstName + " " + s.LastName
+                    }).ToList();
+
+                    ViewBag.SendToCC = new SelectList(users1, "UserDetailId", "FullName", inwardEntry.SendToCC);
+                    ViewBag.SendToUser = new SelectList(users1, "UserDetailId", "FullName", inwardEntry.SendToUser);
+                    ViewBag.Classification = new SelectList(db.ClassificationMasters, "ClassificationId", "ClassificationName", inwardEntry.Classification);
+                    return View(inwardEntry);
+                       
+                }
+             
             }
 
             ViewBag.SendToDept = new SelectList(db.DeptMasters, "DeptId", "DeptName", inwardEntry.SendToDept);
@@ -132,55 +156,56 @@ namespace e_Office.Controllers
 
         public string SaveToDrive(HttpPostedFileBase file1)
         {
-            UserCredential credential;
-
-            using (var stream =
-                 new FileStream(Server.MapPath("~/Documents/credentials.json"), FileMode.Open, FileAccess.ReadWrite))
+            try
             {
-                // The file token.json stores the user's access and refresh tokens, and is created
-                // automatically when the authorization flow completes for the first time.
-                string credPath = Server.MapPath("~/Documents/token.json");
-                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    GoogleClientSecrets.Load(stream).Secrets,
-                    Scopes,
-                    "admin",
-                    CancellationToken.None,
-                    new FileDataStore(credPath, true)).Result;
-                Console.WriteLine("Credential file saved to: " + credPath);
-            }
-            // Create Drive API service.
-            var service = new DriveService(new BaseClientService.Initializer()
-            {
-                HttpClientInitializer = credential,
-                ApplicationName = ApplicationName,
-            });
+                UserCredential credential;
 
-            string _parent = "1licsmd8Lz5OZ2ROE9wEcW1sw1IiY4uGi";
-            Google.Apis.Drive.v3.Data.File body = new Google.Apis.Drive.v3.Data.File();
-            body.Name = System.IO.Path.GetFileName(file1.FileName);
-            body.Description = "Inward Entry Doc";
-            body.MimeType = GetMimeType(file1.FileName);
-            if (!string.IsNullOrEmpty(_parent))
-            {
-                body.Parents = new List<string>() { _parent };
-            }
+                using (var stream =
+                     new FileStream(Server.MapPath("~/Documents/credentials.json"), FileMode.Open, FileAccess.ReadWrite))
+                {
+                    // The file token.json stores the user's access and refresh tokens, and is created
+                    // automatically when the authorization flow completes for the first time.
+                    string credPath = Server.MapPath("~/Documents/token.json");
+                    credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                        GoogleClientSecrets.Load(stream).Secrets,
+                        Scopes,
+                        "admin",
+                        CancellationToken.None,
+                        new FileDataStore(credPath, true)).Result;
+                    Console.WriteLine("Credential file saved to: " + credPath);
+                }
+                // Create Drive API service.
+                var service = new DriveService(new BaseClientService.Initializer()
+                {
+                    HttpClientInitializer = credential,
+                    ApplicationName = ApplicationName,
+                });
+
+                string _parent = "1licsmd8Lz5OZ2ROE9wEcW1sw1IiY4uGi";
+                Google.Apis.Drive.v3.Data.File body = new Google.Apis.Drive.v3.Data.File();
+                body.Name = System.IO.Path.GetFileName(file1.FileName);
+                body.Description = "Inward Entry Doc";
+                body.MimeType = GetMimeType(file1.FileName);
+                if (!string.IsNullOrEmpty(_parent))
+                {
+                    body.Parents = new List<string>() { _parent };
+                }
 
 
-            var fileMetadata = new Google.Apis.Drive.v3.Data.File()
-            {
-                Name = file1.FileName,
-                Parents = new List<string>
+                var fileMetadata = new Google.Apis.Drive.v3.Data.File()
+                {
+                    Name = file1.FileName,
+                    Parents = new List<string>
                 {
                     _parent
                 }
-            };
+                };
 
-            // File's content.
-            System.IO.BinaryReader b = new System.IO.BinaryReader(file1.InputStream);
-            byte[] byteArray = b.ReadBytes(file1.ContentLength);
-            System.IO.MemoryStream _stream = new System.IO.MemoryStream(byteArray);
-            try
-            {
+                // File's content.
+                System.IO.BinaryReader b = new System.IO.BinaryReader(file1.InputStream);
+                byte[] byteArray = b.ReadBytes(file1.ContentLength);
+                System.IO.MemoryStream _stream = new System.IO.MemoryStream(byteArray);
+
                 FilesResource.CreateMediaUpload request = service.Files.Create(body, _stream, GetMimeType(file1.FileName));
                 request.Alt = FilesResource.CreateMediaUpload.AltEnum.Json;
                 request.Fields = "id";
@@ -191,7 +216,7 @@ namespace e_Office.Controllers
             }
             catch (Exception e)
             {
-                return "";
+                return  "Error "+e.InnerException.ToString();
             }
 
         }
@@ -214,7 +239,7 @@ namespace e_Office.Controllers
         public string createDirectory()
         {
             UserCredential credential;
-         
+
             using (var stream =
                 new FileStream(Server.MapPath("~/Documents/credentials.json"), FileMode.Open, FileAccess.ReadWrite))
             {
@@ -294,7 +319,7 @@ namespace e_Office.Controllers
             return NewDirectory.Id;
         }
         #endregion
-    
+
         // GET: InwardEntries/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -306,10 +331,10 @@ namespace e_Office.Controllers
 
             ViewBag.SendToDept = new SelectList(db.DeptMasters, "DeptId", "DeptName", inwardEntry.SendToDept);
             var users = db.UserDetails.Select(s => new
-                            {
-                                UserDetailId = s.UserDetailId,
-                                FullName = s.FirstName + " " + s.LastName
-                            }).ToList();
+            {
+                UserDetailId = s.UserDetailId,
+                FullName = s.FirstName + " " + s.LastName
+            }).ToList();
 
             ViewBag.SendToCC = new SelectList(users, "UserDetailId", "FullName", inwardEntry.CC);
             ViewBag.SendToUser = new SelectList(users, "UserDetailId", "FullName", inwardEntry.SendToUser);
@@ -361,7 +386,7 @@ namespace e_Office.Controllers
                     inwardEntry.DocumentLocation = docPath;
                     inwardEntry.DocumentName = fileName;
                 }
-              
+
                 inwardEntry.CC = string.Join(",", inwardEntry.SendToCC);
                 inwardEntry.UpdatedBy = User.Identity.Name;
                 inwardEntry.UpdatedOn = DateTime.Now;
@@ -421,40 +446,53 @@ namespace e_Office.Controllers
 
         public ActionResult ViewFile(int id, string doc)
         {
-            UserCredential credential;
-            string credPath1 = @"~\Documents\credentials.json";
-            using (var stream =
-                 new FileStream(Server.MapPath(credPath1), FileMode.Open, FileAccess.ReadWrite))
+            try
             {
-                // The file token.json stores the user's access and refresh tokens, and is created
-                // automatically when the authorization flow completes for the first time.
-                string credPath = Server.MapPath(@"~\Documents\token.json");
-                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    GoogleClientSecrets.Load(stream).Secrets,
-                    Scopes,
-                    "admin",
-                    CancellationToken.None,
-                    new FileDataStore(credPath, false)).Result;
-                Console.WriteLine("Credential file saved to: " + credPath);
-            }
-            // Create Drive API service.
-            var service = new DriveService(new BaseClientService.Initializer()
-            {
-                HttpClientInitializer = credential,
-                ApplicationName = ApplicationName,
-            });
+            //    UserCredential credential;
 
-            string savePath = Server.MapPath(@"~\Documents\Temp\");
-            DownloadGoogleFile(service, doc,savePath);
-            var model = new InwardEntry();
-            model = db.InwardEntries.Find(id);
-            return View(model);
+            //    using (var stream =
+            //         new FileStream(Server.MapPath("~/Documents/credentials.json"), FileMode.Open, FileAccess.ReadWrite))
+            //    {
+            //        // The file token.json stores the user's access and refresh tokens, and is created
+            //        // automatically when the authorization flow completes for the first time.
+            //        string credPath = Server.MapPath("~/Documents/token.json");
+            //        credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+            //            GoogleClientSecrets.Load(stream).Secrets,
+            //            Scopes,
+            //            "admin",
+            //            CancellationToken.None,
+            //            new FileDataStore(credPath, true)).Result;
+            //        Console.WriteLine("Credential file saved to: " + credPath);
+            //    }
+            //    // Create Drive API service.
+            //    var service = new DriveService(new BaseClientService.Initializer()
+            //    {
+            //        HttpClientInitializer = credential,
+            //        ApplicationName = ApplicationName,
+            //    });
+
+            //    string savePath = Server.MapPath(@"~\Documents\Temp\");
+            //    DownloadGoogleFile(service, doc, savePath);
+                var model = new InwardEntry();
+                model = db.InwardEntries.Find(id);
+                model.Notes = new List<InwardNotes>();
+                var notes = db.InwardNotes.Where(x => x.InwardId == model.InwardId).ToList();
+                model.Notes = notes;
+                return View(model);
+            }
+            catch(Exception ex)
+            {
+                var model = new InwardEntry();
+                model.ErrorMsg = ex.InnerException.ToString();
+                return View(model);
+            }
+        
         }
 
 
-        public static string DownloadGoogleFile(Google.Apis.Drive.v3.DriveService service,string fileId, string savePath)
+        public static string DownloadGoogleFile(Google.Apis.Drive.v3.DriveService service, string fileId, string savePath)
         {
-           // string FolderPath = System.Web.HttpContext.Current.Server.MapPath("/GoogleDriveFiles/");
+            // string FolderPath = System.Web.HttpContext.Current.Server.MapPath("/GoogleDriveFiles/");
             Google.Apis.Drive.v3.FilesResource.GetRequest request = service.Files.Get(fileId);
             string FileName = request.Execute().Name;
             string FilePath = System.IO.Path.Combine(savePath, FileName);

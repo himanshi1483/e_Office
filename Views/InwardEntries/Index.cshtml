@@ -19,8 +19,8 @@
                     <thead class="thead-custom">
                         <tr class="text-center">
                             @*<th>
-                                   File Name
-                                </th>*@
+                               File Name
+                            </th>*@
                             <th>
                                 @Html.DisplayNameFor(model => model.InwardNumber)
                             </th>
@@ -32,8 +32,8 @@
                                 Department
                             </th>
                             @*<th>
-                                    @Html.DisplayNameFor(model => model.SendToUser)
-                                </th>*@
+                                @Html.DisplayNameFor(model => model.SendToUser)
+                            </th>*@
 
                             <th>
                                 @Html.DisplayNameFor(model => model.From)
@@ -55,9 +55,9 @@
                             <tr>
                                 @*<td>
 
-                                        <a href="https://drive.google.com/a/aarushsystems.com/uc?authuser=6&id=@item.DocumentLocation&export=download" target="_blank"
-                                           class="btn btn-link"> @Html.DisplayFor(modelItem => item.DocumentName) </a>
-                                    </td>*@
+                                    <a href="https://drive.google.com/a/aarushsystems.com/uc?authuser=6&id=@item.DocumentLocation&export=download" target="_blank"
+                                       class="btn btn-link"> @Html.DisplayFor(modelItem => item.DocumentName) </a>
+                                </td>*@
                                 <td>
                                     IN - @Html.DisplayFor(modelItem => item.InwardNumber)
                                 </td>
@@ -69,8 +69,8 @@
                                     @Html.DisplayFor(modelItem => item.Department.DeptName)
                                 </td>
                                 @*<td>
-                                        @item.UserDetails1.FirstName @item.UserDetails1.LastName
-                                    </td>*@
+                                    @item.UserDetails1.FirstName @item.UserDetails1.LastName
+                                </td>*@
 
                                 <td>
                                     @Html.DisplayFor(modelItem => item.From)
@@ -80,21 +80,21 @@
                                     @Html.DisplayFor(modelItem => item.DueDate)
                                 </td>
                                 @*<td>
-                                        @Enum.GetName(typeof(e_Office.Models.EnumModel.Action), Convert.ToInt32(item.Action))
-                                    </td>*@
+                                    @Enum.GetName(typeof(e_Office.Models.EnumModel.Action), Convert.ToInt32(item.Action))
+                                </td>*@
                                 <td>
                                     @Enum.GetName(typeof(e_Office.Models.EnumModel.Priority), Convert.ToInt32(item.Priority))
                                 </td>
                                 @if (item.CreatedBy == User.Identity.Name)
                                 {
-                            <td>
-                                @Html.ActionLink("Edit", "Edit", new { id = item.InwardId }) |
-                                @Html.ActionLink("Delete", "Delete", new { id = item.InwardId }) |
-                                @Html.ActionLink("View", "ViewFile", new { id = item.InwardId, doc = item.DocumentLocation })
-                            </td>
+                                    <td>
+                                        @Html.ActionLink("Edit", "Edit", new { id = item.InwardId }) |
+                                        @Html.ActionLink("Delete", "Delete", new { id = item.InwardId }) |
+                                        @Html.ActionLink("View", "ViewFile", new { id = item.InwardId, doc = item.DocumentLocation })
+                                    </td>
 
                                 }
-                                else 
+                                else
                                 {
                                     <td>
                                         @Html.ActionLink("View", "ViewFile", new { id = item.InwardId, doc = item.DocumentLocation })
@@ -106,10 +106,8 @@
                 </table>
             }
         </div>
+        @*<iframe src="/ViewerJS/#../Documents/Bakri Id.pdf" width="500" height='800' allowfullscreen webkitallowfullscreen></iframe>*@
     </div>
 
 </div>
 
-<script src="~/Content/theme/assets/libs/jquery/dist/jquery.min.js"></script>
-@Styles.Render("~/Content/docuvieware")
-@Scripts.Render("~/bundles/docuvieware")

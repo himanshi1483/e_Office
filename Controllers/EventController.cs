@@ -57,28 +57,28 @@ namespace e_Office.Controllers
             return View();
         }
 
-        private readonly IDataStore dataStore = new FileDataStore(GoogleWebAuthorizationBroker.Folder);
+        //private readonly IDataStore dataStore = new FileDataStore(GoogleWebAuthorizationBroker.Folder);
 
-        private async Task<UserCredential> GetCredentialForApiAsync()
-        {
-            var initializer = new GoogleAuthorizationCodeFlow.Initializer
-            {
-                ClientSecrets = new ClientSecrets
-                {
-                    ClientId = MyClientSecrets.ClientId,
-                    ClientSecret = MyClientSecrets.ClientSecret,
-                },
-                Scopes = CalendarScopes.Scopes,
-            };
-            var flow = new GoogleAuthorizationCodeFlow(initializer);
+        //private async Task<UserCredential> GetCredentialForApiAsync()
+        //{
+        //    var initializer = new GoogleAuthorizationCodeFlow.Initializer
+        //    {
+        //        ClientSecrets = new ClientSecrets
+        //        {
+        //            ClientId = MyClientSecrets.ClientId,
+        //            ClientSecret = MyClientSecrets.ClientSecret,
+        //        },
+        //        Scopes = CalendarScopes.Scopes,
+        //    };
+        //    var flow = new GoogleAuthorizationCodeFlow(initializer);
 
-            var identity = await HttpContext.GetOwinContext().Authentication.GetExternalIdentityAsync(
-                DefaultAuthenticationTypes.ApplicationCookie);
-            var userId = identity.FindFirstValue(MyClaimTypes.GoogleUserId);
+        //    var identity = await HttpContext.GetOwinContext().Authentication.GetExternalIdentityAsync(
+        //        DefaultAuthenticationTypes.ApplicationCookie);
+        //    var userId = identity.FindFirstValue(MyClaimTypes.GoogleUserId);
 
-            var token = await dataStore.GetAsync<TokenResponse>(userId);
-            return new UserCredential(flow, userId, token);
-        }
+        //    var token = await dataStore.GetAsync<TokenResponse>(userId);
+        //    return new UserCredential(flow, userId, token);
+        //}
 
 
         public ActionResult UpcomingEvents()
@@ -164,7 +164,7 @@ namespace e_Office.Controllers
                 credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,
                     CalendarScopes.Scopes,
-                    "owner",
+                    "user",
                     CancellationToken.None,
                     new FileDataStore(credPath, false)).Result;
                 Console.WriteLine("Credential file saved to: " + credPath);

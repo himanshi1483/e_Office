@@ -6750,8 +6750,18 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
     background-color: #27a9e3 !important
 }
 
+
+
 a.bg-cyan:focus, a.bg-cyan:hover, button.bg-cyan:focus, button.bg-cyan:hover {
     background-color: #198bbe !important
+}
+
+.bg-indigo {
+    background-color: #7cc1e0 !important
+}
+
+a.bg-indigo:focus, a.bg-indigo:hover, button.bg-indigo:focus, button.bg-indigo:hover {
+    background-color: #7cc1e0 !important
 }
 
 .bg-orange {

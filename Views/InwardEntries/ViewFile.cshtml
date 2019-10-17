@@ -1,6 +1,4 @@
 ﻿@model e_Office.Models.InwardEntry
-@using GdPicture14.WEB
-@using GdPicture14
 @{
     ViewBag.Title = "View File";
 }
@@ -13,32 +11,29 @@
             </div>
             <div class="card-body">
                 <div>
-                    <button class="btn btn-success btn-sm">Add Green Note</button>
-                    <button class="btn btn-warning btn-sm">Add Yellow Note</button>
+                    <button class="btn btn-success btn-sm" id="btnGreen">Add Green Note</button>
+                    <button class="btn btn-warning btn-sm" id="btnYellow">Add Yellow Note</button>
                 </div>
-                <div class="card" id="note1">
+                <div class="card" id="note1" style="display:none">
                     <div class="card-body">
                         <h4 class="card-title">Green Note</h4>
                         <!-- Create the editor container -->
                         <div id="editor" style="height: 300px;background-color:#aae4c0">
-                            <p>Hello World!</p>
-                            <p>Some initial <strong>bold</strong> text</p>
-                            <p>
-                                <br>
-                            </p>
+                        </div>
+                        @*@Html.TextAreaFor(x=>x.Notes.)*@
+                        <div class="text-right" style="padding-top:10px">
+                            <button class="btn btn-dark btn-sm" type="submit" id="btnSaveGreen">Submit</button>
                         </div>
                     </div>
                 </div>
-                <div class="card" id="note2">
+                <div class="card" id="note2" style="display:none">
                     <div class="card-body">
                         <h4 class="card-title">Yellow Note</h4>
                         <!-- Create the editor container -->
                         <div id="editor1" style="height: 300px;background-color:#f6e585">
-                            <p>Hello World!</p>
-                            <p>Some initial <strong>bold</strong> text</p>
-                            <p>
-                                <br>
-                            </p>
+                        </div>
+                        <div class="text-right" style="padding-top:10px">
+                            <button class="btn btn-dark btn-sm" type="submit" id="btnSaveYellow">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -46,8 +41,12 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6" style="height: 800px; margin-top: 15px;" id="docPanel">  
-        @{
+    <div class="col-md-6" style="height: 800px; margin-top: 15px;" id="docPanel">
+        @*<a href="https://localhost:44328/ViewerJS/#../Documents/Temp/@Model.DocumentName" >DOC</a>*@
+        @*<iframe src="/ViewerJS/#../Documents/Temp/Eoffice  Himanshi First Steps (1).odp" width="500" height='800' allowfullscreen="true" webkitallowfullscreen></iframe>*@
+        <iframe src="https://docs.google.com/viewer?srcid=@Model.DocumentLocation&pid=explorer&efh=false&a=v&chrome=false&embedded=true" width="650" height="850"></iframe>
+
+        @*@{
 
             DocuVieware docuVieware1 = new DocuVieware
             {
@@ -55,10 +54,20 @@
                 Height = new System.Web.UI.WebControls.Unit("100%"),
                 Width = new System.Web.UI.WebControls.Unit("100%")
             };
-            docuVieware1.LoadFromStream(new FileStream(Server.MapPath(@"~\Documents\Temp\" + Model.DocumentName), FileMode.Open, FileAccess.Read), true,Model.DocumentName);
-            
+            docuVieware1.LoadFromStream(new FileStream(Server.MapPath(@"~\Documents\Temp\" + Model.DocumentName), FileMode.Open, FileAccess.Read), true, Model.DocumentName);
+
             docuVieware1.RenderControl(Output);
             docuVieware1.Dispose();
-        }
+        }*@
     </div>
 </div>
+
+<script src="~/Content/theme/assets/libs/jquery/dist/jquery.min.js"></script>
+<script>
+    $('#btnGreen').click(function () {
+        $("#note1").toggle();
+    });
+    $('#btnYellow').click(function () {
+        $("#note2").toggle();
+    });
+</script>

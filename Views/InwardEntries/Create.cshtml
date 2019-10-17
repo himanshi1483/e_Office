@@ -5,7 +5,10 @@
 }
 
 <div class="row text-center">
-
+    @if (Model.ErrorMsg != string.Empty || Model.ErrorMsg != "")
+    {
+        <div class="alert alert-danger alert-dismissable">@Model.ErrorMsg</div>
+    }
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">

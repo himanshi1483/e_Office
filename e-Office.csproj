@@ -45,9 +45,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GdPicture.NET.14.WEB.DocuVieware">
-      <HintPath>..\..\..\..\GdPicture.NET 14\Redist\DocuVieware (.NET Framework 4.6)\GdPicture.NET.14.WEB.DocuVieware.dll</HintPath>
-    </Reference>
+   
     <Reference Include="Google.Apis, Version=1.41.1.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
       <HintPath>packages\Google.Apis.1.41.1\lib\net45\Google.Apis.dll</HintPath>
     </Reference>
@@ -137,6 +135,21 @@
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Vintasoft.Imaging, Version=8.8.0.11, Culture=neutral, PublicKeyToken=e553c7d3e075f61c, processorArchitecture=MSIL">
+      <HintPath>packages\Vintasoft.Imaging.8.8.0.11\lib\net40\Vintasoft.Imaging.dll</HintPath>
+    </Reference>
+    <Reference Include="Vintasoft.Imaging.Web.Api2Controllers, Version=1.8.0.11, Culture=neutral, PublicKeyToken=e553c7d3e075f61c, processorArchitecture=MSIL">
+      <HintPath>packages\Vintasoft.Imaging.Web.Api2Controllers.1.8.0.11\lib\net40\Vintasoft.Imaging.Web.Api2Controllers.dll</HintPath>
+    </Reference>
+    <Reference Include="Vintasoft.Imaging.Web.Services, Version=1.8.0.11, Culture=neutral, PublicKeyToken=e553c7d3e075f61c, processorArchitecture=MSIL">
+      <HintPath>packages\Vintasoft.Imaging.Web.Services.1.8.0.11\lib\net40\Vintasoft.Imaging.Web.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="Vintasoft.Shared, Version=1.3.1.3, Culture=neutral, PublicKeyToken=153caf29a10d2e31, processorArchitecture=MSIL">
+      <HintPath>packages\Vintasoft.Shared.1.3.1.3\lib\net40\Vintasoft.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="Vintasoft.Shared.Web, Version=1.3.1.3, Culture=neutral, PublicKeyToken=153caf29a10d2e31, processorArchitecture=MSIL">
+      <HintPath>packages\Vintasoft.Shared.Web.1.3.1.3\lib\net40\Vintasoft.Shared.Web.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
@@ -1109,33 +1122,29 @@
     <Content Include="Content\theme\html\ltr\pages-invoice.html" />
     <Content Include="Content\theme\html\ltr\tables.html" />
     <Content Include="Content\theme\html\ltr\widgets.html" />
-    <Content Include="Documents\CACHE\HtmlPage1.html" />
+    <Content Include="ViewerJS\compatibility.js" />
+    <Content Include="ViewerJS\example.local.css" />
+    <Content Include="ViewerJS\images\kogmbh.png" />
+    <Content Include="ViewerJS\images\nlnet.png" />
+    <Content Include="ViewerJS\images\texture.png" />
+    <Content Include="ViewerJS\images\toolbarButton-download.png" />
+    <Content Include="ViewerJS\images\toolbarButton-fullscreen.png" />
+    <Content Include="ViewerJS\images\toolbarButton-menuArrows.png" />
+    <Content Include="ViewerJS\images\toolbarButton-pageDown.png" />
+    <Content Include="ViewerJS\images\toolbarButton-pageUp.png" />
+    <Content Include="ViewerJS\images\toolbarButton-presentation.png" />
+    <Content Include="ViewerJS\images\toolbarButton-zoomIn.png" />
+    <Content Include="ViewerJS\images\toolbarButton-zoomOut.png" />
+    <Content Include="ViewerJS\index.html" />
+    <Content Include="ViewerJS\pdf.js" />
+    <Content Include="ViewerJS\pdf.worker.js" />
+    <Content Include="ViewerJS\pdfjsversion.js" />
+    <Content Include="ViewerJS\text_layer_builder.js" />
+    <Content Include="ViewerJS\ui_utils.js" />
+    <Content Include="ViewerJS\webodf.js" />
+    <Content Include="Documents\Temp\DontDelete.html" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="GdPicture.NET.14.filters.64.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="GdPicture.NET.14.filters.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="GdPicture.NET.14.image.gdimgplug.64.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="GdPicture.NET.14.image.gdimgplug.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="GdPicture.NET.14.Imaging.Rendering.Skia.64.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="GdPicture.NET.14.Imaging.Rendering.Skia.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="GdPicture.NET.14.jbig2.encoder.64.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="GdPicture.NET.14.jbig2.encoder.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\1.jpg" />
@@ -1340,6 +1349,11 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\Vintasoft\Vintasoft.Imaging.DocumentViewer.css" />
+    <Content Include="Scripts\Vintasoft\Vintasoft.Imaging.DocumentViewer.js" />
+    <Content Include="Scripts\Vintasoft\Vintasoft.Imaging.Html5.js" />
+    <Content Include="Scripts\Vintasoft\Vintasoft.Imaging.Svg.js" />
+    <Content Include="Scripts\Vintasoft\Vintasoft.Shared.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1470,7 +1484,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Documents\Temp\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

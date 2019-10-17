@@ -59,5 +59,10 @@ namespace e_Office.Models
         public DateTime CreatedOn { get; set; }
         public string UpdatedBy { get; set; }
         public DateTime? UpdatedOn { get; set; }
+
+        [NotMapped]
+        public List<InwardNotes> Notes { get; set; }
+        [NotMapped]
+        public string ErrorMsg { get; set; }
     }
 }
