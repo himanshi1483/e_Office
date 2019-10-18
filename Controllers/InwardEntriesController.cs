@@ -84,29 +84,7 @@ namespace e_Office.Controllers
         {
             if (ModelState.IsValid && file != null)
             {
-                //UserCredential credential;
-                //string credPath1 = Server.MapPath(@"~\Documents\credentials.json");
-                //using (var stream =
-                //     new FileStream((credPath1), FileMode.Open, FileAccess.ReadWrite))
-                //{
-                //    // The file token.json stores the user's access and refresh tokens, and is created
-                //    // automatically when the authorization flow completes for the first time.
-                //    string credPath = Server.MapPath(@"~\Documents\token.json");
-                //    //credential = GoogleWebAuthorizationBroker.AuthorizeAsync(GoogleClientSecrets.Load(stream).Secrets, Scopes,"admin", CancellationToken.None, new FileDataStore("MyAppsToken"))
-                //    credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                //        GoogleClientSecrets.Load(stream).Secrets,
-                //        Scopes,
-                //        "admin",
-                //        CancellationToken.None,
-                //        new FileDataStore(credPath, false)).Result;
-                //    Console.WriteLine("Credential file saved to: " + credPath);
-                //}
-                //// Create Drive API service.
-                //var service = new DriveService(new BaseClientService.Initializer()
-                //{
-                //    HttpClientInitializer = credential,
-                //    ApplicationName = ApplicationName,
-                //});
+
                 var fileName = Path.GetFileName(file.FileName);
                 //var exten = Path.GetExtension(file.FileName);
                 var docPath = SaveToDrive(file);
@@ -136,9 +114,9 @@ namespace e_Office.Controllers
                     ViewBag.SendToUser = new SelectList(users1, "UserDetailId", "FullName", inwardEntry.SendToUser);
                     ViewBag.Classification = new SelectList(db.ClassificationMasters, "ClassificationId", "ClassificationName", inwardEntry.Classification);
                     return View(inwardEntry);
-                       
+
                 }
-             
+
             }
 
             ViewBag.SendToDept = new SelectList(db.DeptMasters, "DeptId", "DeptName", inwardEntry.SendToDept);
@@ -216,7 +194,7 @@ namespace e_Office.Controllers
             }
             catch (Exception e)
             {
-                return  "Error "+e.InnerException.ToString();
+                return "Error " + e.InnerException.ToString();
             }
 
         }
@@ -446,47 +424,30 @@ namespace e_Office.Controllers
 
         public ActionResult ViewFile(int id, string doc)
         {
+            var users = db.UserDetails.Select(s => new
+            {
+                UserName = s.Username,
+                FullName = s.FirstName + " " + s.LastName
+            }).ToList();
+
             try
             {
-            //    UserCredential credential;
-
-            //    using (var stream =
-            //         new FileStream(Server.MapPath("~/Documents/credentials.json"), FileMode.Open, FileAccess.ReadWrite))
-            //    {
-            //        // The file token.json stores the user's access and refresh tokens, and is created
-            //        // automatically when the authorization flow completes for the first time.
-            //        string credPath = Server.MapPath("~/Documents/token.json");
-            //        credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-            //            GoogleClientSecrets.Load(stream).Secrets,
-            //            Scopes,
-            //            "admin",
-            //            CancellationToken.None,
-            //            new FileDataStore(credPath, true)).Result;
-            //        Console.WriteLine("Credential file saved to: " + credPath);
-            //    }
-            //    // Create Drive API service.
-            //    var service = new DriveService(new BaseClientService.Initializer()
-            //    {
-            //        HttpClientInitializer = credential,
-            //        ApplicationName = ApplicationName,
-            //    });
-
-            //    string savePath = Server.MapPath(@"~\Documents\Temp\");
-            //    DownloadGoogleFile(service, doc, savePath);
                 var model = new InwardEntry();
                 model = db.InwardEntries.Find(id);
-                model.Notes = new List<InwardNotes>();
+                model.NotesList = new List<InwardNotes>();
                 var notes = db.InwardNotes.Where(x => x.InwardId == model.InwardId).ToList();
-                model.Notes = notes;
+                model.NotesList = notes;
+                ViewBag.ForwardedTo = new SelectList(users, "UserName", "FullName", model.ForwardedTo);
                 return View(model);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 var model = new InwardEntry();
                 model.ErrorMsg = ex.InnerException.ToString();
+                ViewBag.ForwardedTo = new SelectList(users, "UserName", "FullName", model.ForwardedTo);
                 return View(model);
             }
-        
+
         }
 
 

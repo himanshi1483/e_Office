@@ -61,8 +61,21 @@ namespace e_Office.Models
         public DateTime? UpdatedOn { get; set; }
 
         [NotMapped]
-        public List<InwardNotes> Notes { get; set; }
+        public List<InwardNotes> NotesList { get; set; }
+
+        [NotMapped]
+        public InwardNotes Notes { get; set; }
         [NotMapped]
         public string ErrorMsg { get; set; }
+
+        [NotMapped]
+        public string NoteText { get; set; }
+
+        [NotMapped]
+        public int NoteId { get; set; }
+        [NotMapped]
+        public List<string> ForwardedTo { get; set; }
+
+
     }
 }

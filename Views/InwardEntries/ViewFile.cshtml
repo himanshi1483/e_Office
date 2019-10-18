@@ -3,6 +3,41 @@
     ViewBag.Title = "View File";
 }
 
+<style>
+    .greenNote {
+        min-height: 100px;
+        background-color: #d1f5cd;
+        width: 100%;
+        text-align: justify;
+    }
+
+    .yellowNote {
+        min-height: 100px;
+        background-color: #f6e585;
+        width: 100%;
+        text-align: justify;
+    }
+
+    .replyGreenNote {
+        min-height: 100px;
+        background-color: #58b582;
+        color: white;
+        margin-left: 20px;
+        width: 80%;
+        text-align: justify;
+    }
+
+    .replyYellowNote {
+        min-height: 100px;
+        background-color: #ebeaea;
+        text-align: justify;
+    }
+
+    #ForwardedTo {
+        width: 450px !important;
+    }
+</style>
+
 <div class="row">
     <div class="col-md-6">
         <div class="card">
@@ -14,60 +49,270 @@
                     <button class="btn btn-success btn-sm" id="btnGreen">Add Green Note</button>
                     <button class="btn btn-warning btn-sm" id="btnYellow">Add Yellow Note</button>
                 </div>
+                <input hidden id="hiddenNotesId" value="" />
                 <div class="card" id="note1" style="display:none">
                     <div class="card-body">
                         <h4 class="card-title">Green Note</h4>
+                        @Html.HiddenFor(x => x.InwardId)
+
                         <!-- Create the editor container -->
-                        <div id="editor" style="height: 300px;background-color:#aae4c0">
+                        <div class="editor greenNote" id="editor1" name="NoteText">
                         </div>
-                        @*@Html.TextAreaFor(x=>x.Notes.)*@
+                        @Html.HiddenFor(x => x.Notes.NoteText, new { @name = "Notes.NoteText", @class = "greenNote editor" })
                         <div class="text-right" style="padding-top:10px">
-                            <button class="btn btn-dark btn-sm" type="submit" id="btnSaveGreen">Submit</button>
+                            <button class="btn btn-dark btn-sm" type="button" id="btnSaveGreen">Submit</button>
                         </div>
                     </div>
                 </div>
+
                 <div class="card" id="note2" style="display:none">
                     <div class="card-body">
                         <h4 class="card-title">Yellow Note</h4>
+                        @Html.HiddenFor(x => x.InwardId)
                         <!-- Create the editor container -->
-                        <div id="editor1" style="height: 300px;background-color:#f6e585">
+                        <div class="editor yellowNote" id="editor2" name="NoteText">
                         </div>
+                        @Html.HiddenFor(x => x.Notes.NoteText, new { @name = "Notes.NoteText", @class = "greenNote editor" })
                         <div class="text-right" style="padding-top:10px">
                             <button class="btn btn-dark btn-sm" type="submit" id="btnSaveYellow">Submit</button>
                         </div>
                     </div>
                 </div>
-                @*<h5 class="card-title m-b-0">Inward Entry</h5>*@
+
+                <hr />
+                @if (Model.NotesList.Where(x => x.NoteType == "Green").Count() > 0)
+                {
+                    <div class="card greenNote">
+                        <div class="card-header"> <h4 class="card-title">Green Notes</h4></div>
+
+                        @foreach (var item in Model.NotesList.Where(x => x.NoteType == "Green" && x.RepliedToNote == 0).OrderByDescending(x => x.NotesId))
+                        {
+                            <div class="card-body">
+                                @Html.Raw(Server.HtmlDecode(item.NoteText))
+                            </div>
+                            <div class="card-text p-l-20 p-t-10 col-md-12">
+                                <div class="col-md-6 float-left">Signed By: @item.CreatedBy <p> @item.CreatedDate.ToLongDateString() @item.CreatedDate.ToShortTimeString()</p></div>
+                                @if (item.ForwardedOn != null)
+                                {
+                                    <div class="col-md-6 float-right text-right">Forwarded To: @item.ForwardedTo <p> @item.ForwardedOn.Value.ToLongDateString()  @item.ForwardedOn.Value.ToShortTimeString()</p></div>
+                                }
+                            </div>
+                            <hr style="margin:0" />
+                            foreach (var reply in Model.NotesList.Where(x => x.NoteType == "Green" && x.RepliedToNote == item.NotesId).OrderBy(x => x.CreatedDate))
+                            {
+                                <div style="background:#c1edd5 !important;margin-left:50px;">
+                                    <div class="card-text p-l-20 p-t-10">Replied By: @reply.CreatedBy on @reply.CreatedDate.ToLongDateString()  @reply.CreatedDate.ToShortTimeString()</div>
+                                    <div class="card-body">
+                                        @Html.Raw(Server.HtmlDecode(reply.NoteText))
+                                    </div>
+                                </div>
+                                <hr style="margin:0;margin-left:50px;" />
+                            }
+                            <div class="card-footer text-right">
+                                @if (item.ForwardedTo != null && item.ForwardedTo.Contains(User.Identity.Name))
+                                {
+                                    <button class="btn btn-sm btn-dark" title="Reply" id="btnReply" data-value="@item.NotesId" onclick="fun(this.getAttribute('data-value'));" type="button">Reply</button>
+                                }
+                                <button class="btn btn-sm btn-dark" title="Forward" data-toggle="modal" id="btnForward" onclick="setVal(this.getAttribute('data-value'));"  data-value="@item.NotesId" type="submit">Forward</button>
+                            </div>
+                            <p style="height:5px;background:white"></p>
+                            <div id="append_@item.NotesId"></div>
+
+                        }
+                    </div>
+                }
+                @if (Model.NotesList.Where(x => x.NoteType == "Yellow").Count() > 0)
+                {
+                    <div class="card yellowNote">
+                        <div class="card-header"> <h4 class="card-title">Yellow Notes</h4></div>
+                        @foreach (var item in Model.NotesList.Where(x => x.NoteType == "Yellow" && x.RepliedToNote == 0).OrderByDescending(x => x.NotesId))
+                        {
+                            <div class="card-body">
+                                @Html.Raw(Server.HtmlDecode(item.NoteText))
+                            </div>
+                            <div class="card-text p-l-20 p-t-10 col-md-12">
+                                <div class="col-md-6 float-left">Signed By: @item.CreatedBy <p> @item.CreatedDate.ToLongDateString() @item.CreatedDate.ToShortTimeString()</p></div>
+                                @if (item.ForwardedOn != null)
+                                {
+                                    <div class="col-md-6 float-right text-right">Forwarded To: @item.ForwardedTo <p> @item.ForwardedOn.Value.ToLongDateString()  @item.ForwardedOn.Value.ToShortTimeString()</p></div>
+                                }
+                            </div>
+                            <hr style="margin:0" />
+
+                            foreach (var reply in Model.NotesList.Where(x => x.NoteType == "Yellow" && x.RepliedToNote == item.NotesId).OrderBy(x => x.CreatedDate))
+                            {
+                                <div style="background:#fefabb !important;margin-left:50px;">
+                                    <div class="card-text p-l-20 p-t-10">Replied By: @reply.CreatedBy on @reply.CreatedDate.ToLongDateString()  @reply.CreatedDate.ToShortTimeString()</div>
+                                    <div class="card-body">
+                                        @Html.Raw(Server.HtmlDecode(reply.NoteText))
+                                    </div>
+                                </div>
+                                <hr style="margin:0;margin-left:50px;" />
+                            }
+                            <div class="card-footer text-right">
+                                @if (item.ForwardedTo != null && item.ForwardedTo.Contains(User.Identity.Name))
+                                {
+                                    <button class="btn btn-sm btn-dark" title="Reply" id="btnReply" data-value="@item.NotesId" onclick="fun(this.getAttribute('data-value'));" type="button">Reply</button>
+                                }
+                                <button class="btn btn-sm btn-dark" title="Forward" data-toggle="modal" id="btnForward" onclick="setVal(this.getAttribute('data-value'));" data-value="@item.NotesId" type="submit">Forward</button>
+                            </div>
+                            <p style="height:5px;background:white"></p>
+                            <div id="append_@item.NotesId"></div>
+                        }
+
+                    </div>
+
+                }
+                <div class="card-body replyDiv" style="display:none">
+                    <div class="editor replyYellowNote" id="editor3" name="ReplyText">
+                    </div>
+                    @Html.HiddenFor(x => x.Notes.ReplyText, new { @name = "ReplyText", @class = "greenNote editor" })
+                    <div class="text-right" style="padding-top:10px">
+                        <button class="btn btn-dark btn-sm" type="button" id="btnReplyNote">Submit</button>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="forward-to" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Forward Message To:</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <input type="hidden" name="Notes.NotesId" />
+
+                            <div class="modal-body text-center">
+                                @Html.DropDownList("ForwardedTo", null, "-Select", new { @multiple = "multiple", @class = "select2 form-control form-white" })
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" id="btnFrwardNote" class="btn btn-success">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
-    <div class="col-md-6" style="height: 800px; margin-top: 15px;" id="docPanel">
+    <div class="col-md-6" id="docPanel">
         @*<a href="https://localhost:44328/ViewerJS/#../Documents/Temp/@Model.DocumentName" >DOC</a>*@
         @*<iframe src="/ViewerJS/#../Documents/Temp/Eoffice  Himanshi First Steps (1).odp" width="500" height='800' allowfullscreen="true" webkitallowfullscreen></iframe>*@
-        <iframe src="https://docs.google.com/viewer?srcid=@Model.DocumentLocation&pid=explorer&efh=false&a=v&chrome=false&embedded=true" width="650" height="850"></iframe>
-
-        @*@{
-
-            DocuVieware docuVieware1 = new DocuVieware
-            {
-                ID = "DocuVieware2",
-                Height = new System.Web.UI.WebControls.Unit("100%"),
-                Width = new System.Web.UI.WebControls.Unit("100%")
-            };
-            docuVieware1.LoadFromStream(new FileStream(Server.MapPath(@"~\Documents\Temp\" + Model.DocumentName), FileMode.Open, FileAccess.Read), true, Model.DocumentName);
-
-            docuVieware1.RenderControl(Output);
-            docuVieware1.Dispose();
-        }*@
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title m-b-0">View Document</h5>
+            </div>
+            <div class="card-body">
+                <iframe src="https://docs.google.com/viewer?srcid=@Model.DocumentLocation&pid=explorer&efh=false&a=v&chrome=false&embedded=true" width="750" height="850"></iframe>
+            </div>
+        </div>
     </div>
 </div>
 
-<script src="~/Content/theme/assets/libs/jquery/dist/jquery.min.js"></script>
+
+
 <script>
-    $('#btnGreen').click(function () {
+    function fun(one) {
+        console.log(one);
+        $(".replyDiv").toggle();
+          $("#hiddenNotesId").val(one);
+        $("#append_"+one).append($(".replyDiv"));
+    }
+
+    function setVal(one) {
+        console.log(one);
+       
+        $("#hiddenNotesId").val(one);
+         $('#forward-to').modal('show');
+    }
+    //$('#btnReply').click(function () {
+    //    $(".replyDiv").toggle();
+    //});
+      $('#btnGreen').click(function () {
         $("#note1").toggle();
     });
     $('#btnYellow').click(function () {
         $("#note2").toggle();
+    });
+    var quill = new Quill('#editor1', {
+        theme: 'snow'
+    });
+     var quill = new Quill('#editor2', {
+        theme: 'snow'
+     });
+     var quill = new Quill('#editor3', {
+        theme: 'snow'
+    });
+
+    $('#btnSaveGreen').click(function () {
+            var _content =document.getElementById("editor1").getElementsByClassName('ql-editor');
+            var about = document.getElementsByName('NoteText');
+            console.log(_content);
+            about.value = JSON.stringify(_content[0].firstElementChild.innerHTML);
+            var url = "@Url.Action("AddGreenNote","InwardNotes")";
+            var model = { NoteText :about.value, InwardId: @Model.InwardId};
+              $.ajax({
+                type: "POST",
+                data: JSON.stringify(model),
+                url: url,
+                contentType: "application/json"
+                 }).done(function (res) {
+                 location.reload();
+            });
+    });
+
+     $('#btnSaveYellow').click(function () {
+            var _content = document.getElementById("editor2").getElementsByClassName('ql-editor');
+            var about = document.getElementsByName('NoteText');
+            console.log(_content);
+            about.value = JSON.stringify(_content[0].firstElementChild.innerHTML);
+            var url = "@Url.Action("AddYellowNote","InwardNotes")";
+            var model = { NoteText :about.value, InwardId: @Model.InwardId};
+              $.ajax({
+                type: "POST",
+                data: JSON.stringify(model),
+                url: url,
+                contentType: "application/json"
+                 }).done(function (res) {
+                location.reload();
+            });
+     });
+
+        $('#btnReplyNote').click(function () {
+            var _content = document.getElementById("editor3").getElementsByClassName('ql-editor');
+            var about = document.getElementsByName('ReplyText');
+            console.log(_content);
+            about.value = JSON.stringify(_content[0].firstElementChild.innerHTML);
+            var noteId = $("#hiddenNotesId").val();//document.getElementById("btnReply").getAttribute('data-value');
+           // alert(noteId);
+            var url = "@Url.Action("ReplyNote","InwardNotes")";
+            var model = { NoteText :about.value, NoteId:noteId};
+              $.ajax({
+                type: "POST",
+                data: JSON.stringify(model),
+                url: url,
+                contentType: "application/json"
+                 }).done(function (res) {
+              location.reload();
+            });
+        });
+
+          $('#btnFrwardNote').click(function () {
+              var noteId = $("#hiddenNotesId").val();// document.getElementById("btnForward").getAttribute('data-value');
+            //  alert(noteId);
+              var _forwarded = $("#ForwardedTo").val();
+              alert(_forwarded);
+            var url = "@Url.Action("ForwardNote","InwardNotes")";
+            var model = { ForwardedTo :_forwarded, NoteId:noteId};
+              $.ajax({
+                type: "POST",
+                data: JSON.stringify(model),
+                url: url,
+                contentType: "application/json"
+                 }).done(function (res) {
+          location.reload();
+            });
     });
 </script>

@@ -45,7 +45,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-   
     <Reference Include="Google.Apis, Version=1.41.1.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
       <HintPath>packages\Google.Apis.1.41.1\lib\net45\Google.Apis.dll</HintPath>
     </Reference>
@@ -227,6 +226,7 @@
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InwardEntriesController.cs" />
+    <Compile Include="Controllers\InwardNotesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\SectionMastersController.cs" />
     <Compile Include="Controllers\StandardHeadMastersController.cs" />
@@ -336,6 +336,14 @@
     <Compile Include="Migrations\201910161128347_init19.cs" />
     <Compile Include="Migrations\201910161128347_init19.Designer.cs">
       <DependentUpon>201910161128347_init19.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910180631591_init20.cs" />
+    <Compile Include="Migrations\201910180631591_init20.Designer.cs">
+      <DependentUpon>201910180631591_init20.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910180839556_init211.cs" />
+    <Compile Include="Migrations\201910180839556_init211.Designer.cs">
+      <DependentUpon>201910180839556_init211.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -1484,6 +1492,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\InwardNotes\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -1570,6 +1579,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910161128347_init19.resx">
       <DependentUpon>201910161128347_init19.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910180631591_init20.resx">
+      <DependentUpon>201910180631591_init20.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910180839556_init211.resx">
+      <DependentUpon>201910180839556_init211.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

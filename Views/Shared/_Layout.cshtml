@@ -25,8 +25,7 @@
     <link href="~/Content/bootstrap-tagsinput.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="~/Content/theme/assets/libs/quill/dist/quill.snow.css">
     <script src="~/Content/theme/assets/libs/jquery/dist/jquery.min.js"></script>
-    @Styles.Render("~/Content/docuvieware")
-    @Scripts.Render("~/bundles/docuvieware")
+    <script src="https://cdn.quilljs.com/1.1.6/quill.js"></script>
 </head>
 <body>
     <!-- ============================================================== -->
@@ -296,13 +295,13 @@
             todayHighlight: true,
             orientation: "bottom"
         });
-         var quill = new Quill('#editor', {
-            theme: 'snow'
-         });
+        // var quill = new Quill('.editor', {
+        //    theme: 'snow'
+        // });
 
-          var quill1 = new Quill('#editor1', {
-            theme: 'snow'
-        });
+        //  var quill1 = new Quill('#editor1', {
+        //    theme: 'snow'
+        //});
 
 
     </script>
