@@ -26,9 +26,10 @@
                         @Html.LabelFor(model => model.DocumentLocation, htmlAttributes: new { @class = "col-sm-3 text-right control-label col-form-label" })
                         <div class="col-md-9">
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" name="file" id="file" required>
+                                <input type="file" class="custom-file-input" name="file" id="file">
                                 <label class="custom-file-label" for="file">Choose file...</label>
-                                <div class="invalid-feedback">Example invalid custom file feedback</div>
+                                <div class="invalid-feedback">invalid file</div>
+                                @*<a href="#" id="filelink">test</a>*@
                             </div>
                             @*@Html.EditorFor(model => model.DocumentLocation, new { htmlAttributes = new { @class = "form-control" } })*@
                             @Html.ValidationMessageFor(model => model.DocumentLocation, "", new { @class = "text-danger" })
@@ -154,7 +155,8 @@
                     <div class="form-group row">
                         @Html.LabelFor(model => model.Tags, htmlAttributes: new { @class = "col-sm-3 text-right control-label col-form-label" })
                         <div class="col-md-9">
-                            @Html.EditorFor(model => model.Tags, new { htmlAttributes = new { @class = "form-control" } })
+                            @*@Html.EditorFor(model => model.Tags, new { htmlAttributes = new { @class = "form-control" } })*@
+                            <input data-role="tagsinput" type="text" name="Tags" id="Tags" class="form-control  form-white" />
                             @Html.ValidationMessageFor(model => model.Tags, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -174,3 +176,17 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+<script src="~/Content/theme/assets/libs/jquery/dist/jquery.min.js"></script>
+<script>
+    $('#file').on('change', function (e ) {
+        //get the file name
+           var fileName = e.target.files[0].name;
+        var filelink = $(this).val();
+        //replace the "Choose a file" label
+       /// console.log(fileName);
+       // $("#filelink").val(fileName);
+         //document.getElementById("filelink").href=fileName;
+       $(this).next('.custom-file-label').html(fileName);
+    })
+
+</script>

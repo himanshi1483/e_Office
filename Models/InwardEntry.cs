@@ -75,6 +75,10 @@ namespace e_Office.Models
         public int NoteId { get; set; }
         [NotMapped]
         public List<string> ForwardedTo { get; set; }
+        [NotMapped]
+        public List<string> FwdToDept { get; set; }
+        [NotMapped]
+        public List<string> FwdToCC { get; set; }
 
 
     }

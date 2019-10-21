@@ -82,7 +82,7 @@ namespace e_Office.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(InwardEntry inwardEntry, HttpPostedFileBase file)
         {
-            if (ModelState.IsValid && file != null)
+            if (ModelState.IsValid)
             {
 
                 var fileName = Path.GetFileName(file.FileName);
@@ -429,7 +429,6 @@ namespace e_Office.Controllers
                 UserName = s.Username,
                 FullName = s.FirstName + " " + s.LastName
             }).ToList();
-
             try
             {
                 var model = new InwardEntry();
@@ -438,6 +437,8 @@ namespace e_Office.Controllers
                 var notes = db.InwardNotes.Where(x => x.InwardId == model.InwardId).ToList();
                 model.NotesList = notes;
                 ViewBag.ForwardedTo = new SelectList(users, "UserName", "FullName", model.ForwardedTo);
+                ViewBag.FwdToDept = new SelectList(db.DeptMasters, "DeptId", "DeptName", model.FwdToDept);
+                ViewBag.FwdToCC = new SelectList(users, "UserName", "FullName", model.FwdToCC);
                 return View(model);
             }
             catch (Exception ex)

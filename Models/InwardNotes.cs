@@ -17,8 +17,10 @@ namespace e_Office.Models
         public DateTime CreatedDate { get; set; }
         public string CreatedBy { get; set; }
         public bool IsSigned { get; set; }
-
+        public string DigitalSign { get; set; }
         public string ForwardedTo { get; set; }
+        public string FwdToDept { get; set; }
+        public string FwdToCC { get; set; }
         public string ForwardedBy { get; set; }
         public DateTime? ForwardedOn { get; set; }
         public int RepliedToNote { get; set; }
