@@ -24,8 +24,11 @@
     <link href="~/Content/theme/dist/css/style.css" rel="stylesheet" />
     <link href="~/Content/bootstrap-tagsinput.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="~/Content/theme/assets/libs/quill/dist/quill.snow.css">
+    <link href="~/Content/theme/assets/libs/toastr/build/toastr.min.css" rel="stylesheet">
+
     <script src="~/Content/theme/assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="https://cdn.quilljs.com/1.1.6/quill.js"></script>
+
 </head>
 <body>
     <!-- ============================================================== -->
@@ -215,7 +218,8 @@
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav" class="p-t-30">
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("Index", "Home")" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span class="hide-menu">Dashboard</span></a></li>
-
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("Inbox", "InwardNotes")" aria-expanded="false"><i class="mdi mdi-contact-mail"></i><span class="hide-menu">Inbox</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("Outbox", "InwardNotes")" aria-expanded="false"><i class="mdi mdi-contact-mail"></i><span class="hide-menu">Outbox</span></a></li>
                         <li class="sidebar-item">
                             <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-receipt"></i><span class="hide-menu">Masters </span></a>
                             <ul aria-expanded="false" class="collapse  first-level">
@@ -253,8 +257,21 @@
             <div class="container-fluid">
                 @RenderBody()
                 @*
-                    @Html.Partial("_LoginPartial")
+        @Html.Partial("_LoginPartial")
                 *@
+                <!--Start of Tawk.to Script-->
+                <script type="text/javascript">
+                    var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+                    (function () {
+                        var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+                        s1.async = true;
+                        s1.src = 'https://embed.tawk.to/5daff15f78ab74187a5b0921/default';
+                        s1.charset = 'UTF-8';
+                        s1.setAttribute('crossorigin', '*');
+                        s0.parentNode.insertBefore(s1, s0);
+                    })();
+                </script>
+                <!--End of Tawk.to Script-->
             </div>
             <footer class="footer text-center">
                 All Rights Reserved by Aarush Systems. Designed and Developed by Aarush Systems.
@@ -285,10 +302,11 @@
     <script src="~/Content/theme/assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     <script src="~/Content/bootstrap-tagsinput.min.js"></script>
     <script src="~/Content/theme/assets/libs/quill/dist/quill.min.js"></script>
+    <script src="~/Content/theme/assets/libs/toastr/build/toastr.min.js"></script>
     @RenderSection("scripts", required: false)
     <script>
         $(".select2").select2({
-             placeholder: "--Select--"
+            placeholder: "--Select--"
         });
         jQuery('.mydatepicker').datepicker({
             autoclose: true,
@@ -306,6 +324,37 @@
         //});
 
 
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            var toast = '@TempData["Notification"]';
+            // Check whether a toast should be displayed
+            if (toast) {
+                var toasttype = 'info';
+                var toastposition = 'upper-right';
+                toastr.options = {
+                  "closeButton": true,
+                  "debug": false,
+                  "newestOnTop": false,
+                  "progressBar": false,
+                  "positionClass": "toast-top-right",
+                  "preventDuplicates": false,
+                  "onclick": null,
+                  "showDuration": "300",
+                  "hideDuration": "1000",
+                  "timeOut": "5000",
+                  "extendedTimeOut": "1000",
+                  "showEasing": "swing",
+                  "hideEasing": "linear",
+                  "showMethod": "fadeIn",
+                  "hideMethod": "fadeOut"
+                }
+                toastr[toasttype](toast);
+            }
+            //  $('#ts-info').on('click', function() {
+            //    toastr.info('We do have the Kapua suite available.', 'Turtle Bay Resort');
+            //});
+        })
     </script>
 </body>
 </html>

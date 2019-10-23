@@ -79,6 +79,12 @@ namespace e_Office.Models
         public List<string> FwdToDept { get; set; }
         [NotMapped]
         public List<string> FwdToCC { get; set; }
+        [NotMapped]
+        public string ReplyTo { get; set; }
+        [NotMapped]
+        public List<string> ReplyToDept { get; set; }
+        [NotMapped]
+        public List<string> ReplyToCC { get; set; }
 
 
     }

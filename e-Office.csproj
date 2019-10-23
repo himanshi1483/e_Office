@@ -232,7 +232,6 @@
     <Compile Include="Controllers\StandardHeadMastersController.cs" />
     <Compile Include="Controllers\StateMastersController.cs" />
     <Compile Include="Controllers\SubCategoryMastersController.cs" />
-    <Compile Include="Controllers\SubHeadMastersController.cs" />
     <Compile Include="Controllers\TalukaMastersController.cs" />
     <Compile Include="Controllers\TaskModelsController.cs" />
     <Compile Include="Controllers\UserActivitiesController.cs" />
@@ -352,6 +351,18 @@
     <Compile Include="Migrations\201910210821216_init22.cs" />
     <Compile Include="Migrations\201910210821216_init22.Designer.cs">
       <DependentUpon>201910210821216_init22.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910220721288_init221.cs" />
+    <Compile Include="Migrations\201910220721288_init221.Designer.cs">
+      <DependentUpon>201910220721288_init221.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910220741018_init23.cs" />
+    <Compile Include="Migrations\201910220741018_init23.Designer.cs">
+      <DependentUpon>201910220741018_init23.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910220940142_init24.cs" />
+    <Compile Include="Migrations\201910220940142_init24.Designer.cs">
+      <DependentUpon>201910220940142_init24.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -1138,6 +1149,7 @@
     <Content Include="Content\theme\html\ltr\pages-invoice.html" />
     <Content Include="Content\theme\html\ltr\tables.html" />
     <Content Include="Content\theme\html\ltr\widgets.html" />
+    <Content Include="Images\default-sign.jpg" />
     <Content Include="ViewerJS\compatibility.js" />
     <Content Include="ViewerJS\example.local.css" />
     <Content Include="ViewerJS\images\kogmbh.png" />
@@ -1444,16 +1456,6 @@
     <Content Include="Views\SectionMasters\Details.cshtml" />
     <Content Include="Views\SectionMasters\Edit.cshtml" />
     <Content Include="Views\SectionMasters\Index.cshtml" />
-    <Content Include="Views\StandardHeadMasters\Create.cshtml" />
-    <Content Include="Views\StandardHeadMasters\Delete.cshtml" />
-    <Content Include="Views\StandardHeadMasters\Details.cshtml" />
-    <Content Include="Views\StandardHeadMasters\Edit.cshtml" />
-    <Content Include="Views\StandardHeadMasters\Index.cshtml" />
-    <Content Include="Views\BasicHeadMasters\Create.cshtml" />
-    <Content Include="Views\BasicHeadMasters\Delete.cshtml" />
-    <Content Include="Views\BasicHeadMasters\Details.cshtml" />
-    <Content Include="Views\BasicHeadMasters\Edit.cshtml" />
-    <Content Include="Views\BasicHeadMasters\Index.cshtml" />
     <Content Include="Views\StateMasters\Create.cshtml" />
     <Content Include="Views\StateMasters\Delete.cshtml" />
     <Content Include="Views\StateMasters\Details.cshtml" />
@@ -1497,10 +1499,21 @@
     <Content Include="Views\TaskModels\Edit.cshtml" />
     <Content Include="Views\TaskModels\Index.cshtml" />
     <Content Include="Views\InwardEntries\ViewFile.cshtml" />
+    <Content Include="Views\InwardNotes\OutBox.cshtml" />
+    <Content Include="Views\InwardNotes\Inbox.cshtml" />
+    <Content Include="Views\BasicHeadMasters\Create.cshtml" />
+    <Content Include="Views\BasicHeadMasters\Delete.cshtml" />
+    <Content Include="Views\BasicHeadMasters\Details.cshtml" />
+    <Content Include="Views\BasicHeadMasters\Edit.cshtml" />
+    <Content Include="Views\BasicHeadMasters\Index.cshtml" />
+    <Content Include="Views\StandardHeadMasters\Create.cshtml" />
+    <Content Include="Views\StandardHeadMasters\Delete.cshtml" />
+    <Content Include="Views\StandardHeadMasters\Details.cshtml" />
+    <Content Include="Views\StandardHeadMasters\Edit.cshtml" />
+    <Content Include="Views\StandardHeadMasters\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\InwardNotes\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -1599,6 +1612,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910210821216_init22.resx">
       <DependentUpon>201910210821216_init22.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910220721288_init221.resx">
+      <DependentUpon>201910220721288_init221.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910220741018_init23.resx">
+      <DependentUpon>201910220741018_init23.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910220940142_init24.resx">
+      <DependentUpon>201910220940142_init24.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

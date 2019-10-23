@@ -3,24 +3,26 @@
 @{
     ViewBag.Title = "Create";
 }
-
+<style>   
+    .select2-container--classic .select2-selection--single, .select2-container--default .select2-selection--multiple, .select2-container--default .select2-selection--single, .select2-container--default .select2-selection--single .select2-selection__arrow, .select2-container--default .select2-selection--single .select2-selection__rendered {
+        margin-bottom:0px !important;
+    }
+</style>
 <div class="row text-center">
-    @if (Model.ErrorMsg != string.Empty || Model.ErrorMsg != "")
+    @if ((Model.ErrorMsg != string.Empty) && (Model.ErrorMsg != "") && (Model.ErrorMsg != null))
     {
         <div class="alert alert-danger alert-dismissable">@Model.ErrorMsg</div>
     }
     <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title m-b-0">Create Inward Entry</h5>
+        <div class="card" style="border-left:2px solid #27a9e3">
+            <div class="card-header bg-cyan">
+                <h5 class="card-title m-b-0 text-white">Create Inward Entry</h5>
             </div>
             @using (Html.BeginForm("Create", "InwardEntries", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 @Html.AntiForgeryToken()
-                <div class="card-body col-md-6">
+                <div class="card-body col-md-6 float-left">
 
-
-                    @*<div class="form-group row row">*@
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     <div class="form-group row">
                         @Html.LabelFor(model => model.DocumentLocation, htmlAttributes: new { @class = "col-sm-3 text-right control-label col-form-label" })
@@ -37,20 +39,6 @@
                     </div>
 
                     <div class="form-group row">
-                        @Html.LabelFor(model => model.InwardNumber, htmlAttributes: new { @class = "col-sm-3 text-right control-label col-form-label" })
-                        <div class="col-md-9">
-                            @*@Html.EditorFor(model => model.InwardNumber, new { htmlAttributes = new { @class = "form-control" } })*@
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">IN - </span>
-                                </div>
-                                @Html.EditorFor(model => model.InwardNumber, new { htmlAttributes = new { @class = "form-control" } })
-                            </div>
-                            @Html.ValidationMessageFor(model => model.InwardNumber, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
                         @Html.LabelFor(model => model.InwardDate, htmlAttributes: new { @class = "col-sm-3 text-right control-label col-form-label" })
                         <div class="col-md-9">
                             <div class="input-group">
@@ -62,15 +50,6 @@
                             @Html.ValidationMessageFor(model => model.InwardDate, "", new { @class = "text-danger" })
                         </div>
                     </div>
-
-                    <div class="form-group row">
-                        @Html.LabelFor(model => model.Subject, htmlAttributes: new { @class = "col-sm-3 text-right control-label col-form-label" })
-                        <div class="col-md-9">
-                            @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
                     <div class="form-group row">
                         @Html.LabelFor(model => model.From, htmlAttributes: new { @class = "col-sm-3 text-right control-label col-form-label" })
                         <div class="col-md-9">
@@ -78,15 +57,6 @@
                             @Html.ValidationMessageFor(model => model.From, "", new { @class = "text-danger" })
                         </div>
                     </div>
-
-                    <div class="form-group row">
-                        @Html.LabelFor(model => model.SendToDept, htmlAttributes: new { @class = "col-sm-3 text-right control-label col-form-label" })
-                        <div class="col-md-9">
-                            @Html.DropDownList("SendToDept", null, "-Select", new { @class = "select2 form-control custom-select" })
-                            @Html.ValidationMessageFor(model => model.SendToDept, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
                     <div class="form-group row">
                         @Html.LabelFor(model => model.SendToUser, htmlAttributes: new { @class = "col-sm-3 text-right control-label col-form-label" })
                         <div class="col-md-9">
@@ -94,15 +64,6 @@
                             @Html.ValidationMessageFor(model => model.SendToUser, "", new { @class = "text-danger" })
                         </div>
                     </div>
-
-                    <div class="form-group row">
-                        @Html.LabelFor(model => model.SendToCC, htmlAttributes: new { @class = "col-sm-3 text-right control-label col-form-label" })
-                        <div class="col-md-9">
-                            @Html.DropDownList("SendToCC", null, "-Select", new { @multiple = "multiple", @class = "select2 form-control m-t-15" })
-                            @Html.ValidationMessageFor(model => model.SendToCC, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
                     <div class="form-group row">
                         @Html.LabelFor(model => model.DueDate, htmlAttributes: new { @class = "col-sm-3 text-right control-label col-form-label" })
                         <div class="col-md-9">
@@ -117,7 +78,56 @@
                             @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
                         </div>
                     </div>
-
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.Priority, htmlAttributes: new { @class = "col-sm-3 text-right control-label col-form-label" })
+                        <div class="col-md-9">
+                            @Html.DropDownListFor(x => x.Priority, EnumHelper.GetSelectList(typeof(e_Office.Models.EnumModel.Priority)), "-Select-", new { @class = "select2 form-control custom-select" })
+                            @Html.ValidationMessageFor(model => model.Priority, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "col-sm-3 text-right control-label col-form-label" })
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body col-md-6 float-right">
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.InwardNumber, htmlAttributes: new { @class = "col-sm-3 text-right control-label col-form-label" })
+                        <div class="col-md-9">
+                            @*@Html.EditorFor(model => model.InwardNumber, new { htmlAttributes = new { @class = "form-control" } })*@
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">IN - </span>
+                                </div>
+                                @Html.EditorFor(model => model.InwardNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.InwardNumber, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.Subject, htmlAttributes: new { @class = "col-sm-3 text-right control-label col-form-label" })
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.SendToDept, htmlAttributes: new { @class = "col-sm-3 text-right control-label col-form-label" })
+                        <div class="col-md-9">
+                            @Html.DropDownList("SendToDept", null, "-Select", new { @class = "select2 form-control custom-select" })
+                            @Html.ValidationMessageFor(model => model.SendToDept, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.SendToCC, htmlAttributes: new { @class = "col-sm-3 text-right control-label col-form-label" })
+                        <div class="col-md-9">
+                            @Html.DropDownList("SendToCC", null, "-Select", new { @multiple = "multiple", @class = "select2 form-control m-t-15" })
+                            @Html.ValidationMessageFor(model => model.SendToCC, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
                     <div class="form-group row">
                         @Html.LabelFor(model => model.Action, htmlAttributes: new { @class = "col-sm-3 text-right control-label col-form-label" })
                         <div class="col-md-9">
@@ -127,15 +137,6 @@
                             @Html.ValidationMessageFor(model => model.Action, "", new { @class = "text-danger" })
                         </div>
                     </div>
-
-                    <div class="form-group row">
-                        @Html.LabelFor(model => model.Priority, htmlAttributes: new { @class = "col-sm-3 text-right control-label col-form-label" })
-                        <div class="col-md-9">
-                            @Html.DropDownListFor(x => x.Priority, EnumHelper.GetSelectList(typeof(e_Office.Models.EnumModel.Priority)), "-Select-", new { @class = "select2 form-control custom-select" })
-                            @Html.ValidationMessageFor(model => model.Priority, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
                     <div class="form-group row">
                         @Html.LabelFor(model => model.Classification, htmlAttributes: new { @class = "col-sm-3 text-right control-label col-form-label" })
                         <div class="col-md-9">
@@ -143,15 +144,6 @@
                             @Html.ValidationMessageFor(model => model.Classification, "", new { @class = "text-danger" })
                         </div>
                     </div>
-
-                    <div class="form-group row">
-                        @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "col-sm-3 text-right control-label col-form-label" })
-                        <div class="col-md-9">
-                            @Html.EditorFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
                     <div class="form-group row">
                         @Html.LabelFor(model => model.Tags, htmlAttributes: new { @class = "col-sm-3 text-right control-label col-form-label" })
                         <div class="col-md-9">
@@ -161,20 +153,17 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <div class="col-md-offset-2 col-md-9">
-                            <input type="submit" value="Create" class="btn btn-default" />
-                        </div>
-                    </div>
-                    @*</div>*@
-
-                </div>}
+                </div>
+                <div class="card-footer text-right">
+                        <input type="submit" value="Create" class="btn btn-cyan btn-md" />
+                </div>
+            }
         </div>
     </div>
 
 </div>
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    <a href="@Url.Action("Index")" class="btn btn-sm btn-success">Back to List</a>
 </div>
 <script src="~/Content/theme/assets/libs/jquery/dist/jquery.min.js"></script>
 <script>

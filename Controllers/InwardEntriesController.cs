@@ -41,6 +41,8 @@ namespace e_Office.Controllers
             return View(db.InwardEntries.Where(x => x.SendToUser == UserDetailId).ToList());
         }
 
+     
+
         // GET: InwardEntries/Details/5
         public ActionResult Details(int? id)
         {
@@ -424,6 +426,10 @@ namespace e_Office.Controllers
 
         public ActionResult ViewFile(int id, string doc)
         {
+            //if(TempData["Notification"] != null || TempData["Notification"].ToString() != "")
+            //{
+            //    TempData["Notification"]
+            //}
             var users = db.UserDetails.Select(s => new
             {
                 UserName = s.Username,
@@ -439,6 +445,9 @@ namespace e_Office.Controllers
                 ViewBag.ForwardedTo = new SelectList(users, "UserName", "FullName", model.ForwardedTo);
                 ViewBag.FwdToDept = new SelectList(db.DeptMasters, "DeptId", "DeptName", model.FwdToDept);
                 ViewBag.FwdToCC = new SelectList(users, "UserName", "FullName", model.FwdToCC);
+                ViewBag.ReplyTo = new SelectList(users, "UserName", "FullName", model.ReplyTo);
+                ViewBag.ReplyToDept = new SelectList(db.DeptMasters, "DeptId", "DeptName", model.ReplyToDept);
+                ViewBag.ReplyToCC = new SelectList(users, "UserName", "FullName", model.ReplyToCC);
                 return View(model);
             }
             catch (Exception ex)

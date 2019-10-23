@@ -3506,10 +3506,10 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     z-index: 1000;
     display: none;
     float: left;
-    min-width: 10rem;
+    min-width: 9rem;
     padding: 0.5rem 0;
     margin: 0.125rem 0 0;
-    font-size: 0.875rem;
+    font-size: 13px;
     color: #3e5569;
     text-align: left;
     list-style: none;
@@ -10336,11 +10336,17 @@ html[dir=ltr] body .p-l-0 {
 
     .page-wrapper > .container-fluid {
         padding: 20px;
-        min-height: calc(100vh - 180px)
+        min-height: calc(120vh - 180px)
     }
 
 .footer {
-    padding: 15px 20px
+    padding: 15px 20px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background: #343a40;
+    color: white;
 }
 
 #main-wrapper {

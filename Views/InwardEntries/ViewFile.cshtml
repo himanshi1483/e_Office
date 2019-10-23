@@ -28,17 +28,18 @@
     }
 
     .replyYellowNote {
-        min-height: 100px;
+        height: 100px;
         background-color: #ebeaea;
         text-align: justify;
     }
 
-    #ForwardedTo {
+    /*#ForwardedTo {
         width: 450px !important;
-    }
+    }*/
 
     .select2 {
-        width: 150px;
+        min-width: 350px;
+        overflow: hidden;
     }
 </style>
 
@@ -54,7 +55,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6" id="divNotes">
         <div class="card">
             <div class="card-header">
                 <h5 class="card-title m-b-0">View Inward Entry</h5>
@@ -65,8 +66,7 @@
                     <button class="btn btn-warning btn-sm" id="btnYellow">Add Yellow Note</button>
                 </div>
                 <input hidden id="hiddenNotesId" value="" />
-                @using (Html.BeginForm("AddGreenNote", "InwardNotes", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                {
+                @*<form enctype="multipart/form-data" method="post">*@
 
                     <div class="card" id="note1" style="display:none">
                         <div class="card-body">
@@ -86,18 +86,16 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <img id="imgSign1" src="#" alt="your image" />
+                                    <img id="imgSign1" src="~/Images/default-sign.jpg" height="80" width="150" alt="your image" />
                                 </div>
                             </div>
                         </div>
                         <div class="text-right" style="margin-right:20px">
                             <button class="btn btn-dark btn-sm" style="display:none" disabled type="button" id="btnSaveGreen">Submit</button>
-                            @*<button class="btn btn-dark btn-sm" style="display:none" disabled type="submit" id="btnSaveYellow">Submit</button>*@
                             <button class="btn btn-sm btn-dark" style="display:none" title="Add Digital Signature" id="btnSignGreen" type="button">Add Digital Signature</button>
-                            @*<button class="btn btn-sm btn-dark" style="display:none" title="Add Digital Signature" id="btnSignYellow" type="submit">Add Digital Signature</button>*@
                         </div>
                     </div>
-                }
+             
                 <div class="card" id="note2" style="display:none">
                     <div class="card-body">
                         <h4 class="card-title">Yellow Note</h4>
@@ -117,14 +115,12 @@
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <img id="imgSign2" src="#" alt="your image" />
+                                <img id="imgSign2" src="~/Images/default-sign.jpg" height="80" width="150" alt="your image" />
                             </div>
                         </div>
                     </div>
                     <div class="text-right" style="margin-right:20px">
-                        @*<button class="btn btn-dark btn-sm" style="display:none" disabled type="submit" id="btnSaveGreen">Submit</button>*@
                         <button class="btn btn-dark btn-sm" style="display:none" disabled type="submit" id="btnSaveYellow">Submit</button>
-                        @*<button class="btn btn-sm btn-dark" style="display:none" title="Add Digital Signature" id="btnSignGreen" type="submit">Add Digital Signature</button>*@
                         <button class="btn btn-sm btn-dark" style="display:none" title="Add Digital Signature" id="btnSignYellow" type="submit">Add Digital Signature</button>
                     </div>
                 </div>
@@ -132,175 +128,283 @@
                 <hr />
                 @if (Model.NotesList.Count() > 0)
                 {
-            <div class="card">
-                <div class="card-header"> <h4 class="card-title">Notes</h4></div>
+                    <div class="card">
+                        <div class="card-header"> <h4 class="card-title">Notes</h4></div>
 
-                @foreach (var item in Model.NotesList.Where(x => x.RepliedToNote == 0).OrderByDescending(x => x.NotesId))
-                {
-                    <div class="card-body @(item.NoteType)Note">
-                        @Html.Raw(Server.HtmlDecode(item.NoteText))
-                    </div>
-                    <div class="card-text p-l-20 p-t-10 col-md-12">
-                        <div class="col-md-6 float-left">Signed By: @item.CreatedBy <p> @item.CreatedDate.ToLongDateString() @item.CreatedDate.ToShortTimeString()</p></div>
-                        @if (item.ForwardedOn != null)
+                        @foreach (var item in Model.NotesList.Where(x => x.RepliedToNote == 0).OrderByDescending(x => x.NotesId))
                         {
-                            <div class="col-md-6 float-right text-right">Forwarded To: @item.ForwardedTo <p> @item.ForwardedOn.Value.ToLongDateString()  @item.ForwardedOn.Value.ToShortTimeString()</p></div>
-                        }
-                    </div>
-                    <div class="card-footer text-right">
-                        @*@if (item.ForwardedTo != null && item.ForwardedTo.Contains(User.Identity.Name))
-                        {
-                            <button class="btn btn-sm btn-dark" title="Reply" id="btnReply" data-value="@item.NotesId" onclick="fun(this.getAttribute('data-value'));" type="button">Reply</button>
-                        }*@
-                        <button class="btn btn-sm btn-dark" title="Forward" data-toggle="modal" id="btnForward" onclick="setVal(this.getAttribute('data-value'));" data-value="@item.NotesId" type="submit">Action  <i class="fa fa-chevron-down"></i></button>
-                    </div>
-                    <hr style="margin:0" />
-
-                    foreach (var reply in Model.NotesList.Where(x => x.RepliedToNote == item.NotesId).OrderBy(x => x.CreatedDate))
-                    {
-                        <div class="@(item.NoteType)Note" style="margin-left:50px;width:93% !important">
-                            <div class="card-text p-l-20 p-t-10">Replied By: @reply.CreatedBy on @reply.CreatedDate.ToLongDateString()  @reply.CreatedDate.ToShortTimeString()</div>
-                            <div class="card-body">
-                                @Html.Raw(Server.HtmlDecode(reply.NoteText))
+                            <div class="card-body @(item.NoteType)Note">
+                                @Html.Raw(Server.HtmlDecode(item.NoteText))
                             </div>
-                        </div>
-                        <hr style="margin:0;margin-left:50px;" />
-                        <div class="card-footer text-right">
-                            @*@if (item.ForwardedTo != null && item.ForwardedTo.Contains(User.Identity.Name))
+                            <div class="card-text p-l-20 p-t-10 col-md-12">
+                                <div class="col-md-6 float-left"><i class="fa fa-check" style="color:forestgreen;font-size:18px;"></i>  Signed By: @item.CreatedBy <p> @item.CreatedDate.ToLongDateString() @item.CreatedDate.ToShortTimeString()</p></div>
+                                @if (item.ForwardedOn != null)
+                                {
+                                    <div class="col-md-6 float-right text-right">Forwarded To: @item.ForwardedTo <p> @item.ForwardedOn.Value.ToLongDateString()  @item.ForwardedOn.Value.ToShortTimeString()</p></div>
+                                }
+                            </div>
+                            <div class="card-footer text-right">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-danger btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item fwdLink" href="#" data-value="@item.NotesId" onclick="showFwdDiv(this.getAttribute('data-value'));">Forward</a>
+                                        <a class="dropdown-item" href="#" data-value="@item.NotesId">Close</a>
+                                        <a class="dropdown-item" href="#" data-value="@item.NotesId" onclick="showReplyDiv(this.getAttribute('data-value'));">Reply</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <hr style="margin:0" />
+
+                            foreach (var reply in Model.NotesList.Where(x => x.RepliedToNote == item.NotesId).OrderBy(x => x.CreatedDate))
                             {
-                                <button class="btn btn-sm btn-dark" title="Reply" id="btnReply" data-value="@item.NotesId" onclick="fun(this.getAttribute('data-value'));" type="button">Reply</button>
-                            }*@
-                            <button class="btn btn-sm btn-dark" title="Forward" data-toggle="modal" id="btnForward" onclick="setVal(this.getAttribute('data-value'));" data-value="@item.NotesId" type="submit">Action  <i class="fa fa-chevron-down"></i></button>
-                        </div>
-                    }
-                    <p style="height:5px;background:white"></p>
-                    <div id="append_@item.NotesId"></div>
+                                <div class="@(item.NoteType)Note" style="margin-left:50px;width:93% !important">
+                                    <div class="card-text p-l-20 p-t-10">Replied By: @reply.CreatedBy on @reply.CreatedDate.ToLongDateString()  @reply.CreatedDate.ToShortTimeString()</div>
+                                    <div class="card-body">
+                                        @Html.Raw(Server.HtmlDecode(reply.NoteText))
+                                    </div>
+                                </div>
+                                <hr style="margin:0;margin-left:50px;" />
+                                <div class="card-footer text-right">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-danger btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item fwdLink" href="#" data-value="@reply.NotesId" onclick="showFwdDiv(this.getAttribute('data-value'));">Forward</a>
+                                            <a class="dropdown-item" href="#" data-value="@item.NotesId">Close</a>
+                                            <a class="dropdown-item" href="#" data-value="@reply.NotesId" onclick="showReplyDiv(this.getAttribute('data-value'));">Reply</a>
 
-                }
-
-            </div>
-                }
-
-                <div class="card-body replyDiv" style="display:none">
-                    <div class="editor replyYellowNote" id="editor3" name="ReplyText">
-                    </div>
-                    @Html.HiddenFor(x => x.Notes.ReplyText, new { @name = "ReplyText", @class = "greenNote editor" })
-                    <div class="text-right" style="padding-top:10px">
-                        <button class="btn btn-dark btn-sm" type="button" id="btnReplyNote">Submit</button>
-                    </div>
-                </div>
-
-                <div class="modal fade" id="forward-to" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Forward Message To:</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <input type="hidden" name="Notes.NotesId" />
-
-                            <div class="modal-body text-center">
-                                @Html.DropDownList("ForwardedTo", null, "-Select", new { @multiple = "multiple", @class = "select2 form-control form-white" })
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" id="btnFrwardNote" class="btn btn-success">Save changes</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal fade" id="digitalSign" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document" style="max-width:600px !important">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Add Digital Signature</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <input type="hidden" name="Notes.NotesId" />
-                            <form id="digiSign" method="post" enctype="multipart/form-data">
-                                <div class="modal-body">
-
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <label class="control-label">Inward Number: </label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            @Html.DisplayFor(x => x.InwardNumber, new { @class = "control-label" })
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <label class="control-label">Subject:</label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            @Html.DisplayFor(x => x.Subject, new { @class = "form-control" })
-                                        </div>
-                                    </div>
-                                    @*<div class="row">
-                                            <div class="col-md-3">
-                                                <label class="control-label">From:</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                @Html.DisplayFor(x => x.From, new { @class = "form-control" })
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <label class="control-label">Action:</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                @Html.DropDownListFor(x => x.Action, EnumHelper.GetSelectList(typeof(e_Office.Models.EnumModel.Action)), "-Select-", new { @class = "select2" })
-                                            </div>
-                                        </div>
-                                        <div class="row" id="fwd1" style="display:none">
-                                            <div class="col-md-3">
-                                                @Html.LabelFor(model => model.Notes.FwdToDept, htmlAttributes: new { @class = "control-label" })
-                                            </div>
-                                            <div class="col-md-6">
-                                                @Html.DropDownList("FwdToDept", null, "-Select", new { @class = "select2 form-control custom-select" })
-                                                @Html.ValidationMessageFor(model => model.Notes.FwdToDept, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-
-                                        <div class="row" id="fwd2" style="display:none">
-                                            <div class="col-md-3">
-                                                @Html.LabelFor(model => model.Notes.ForwardedTo, htmlAttributes: new { @class = "control-label" })
-                                            </div>
-                                            <div class="col-md-6">
-                                                @Html.DropDownList("ForwardedTo", null, "-Select", new { @class = "select2 form-control custom-select" })
-                                                @Html.ValidationMessageFor(model => model.Notes.ForwardedTo, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-
-                                        <div class="row" id="fwd3" style="display:none">
-                                            <div class="col-md-3">
-                                                @Html.LabelFor(model => model.Notes.FwdToCC, htmlAttributes: new { @class = "control-label" })
-                                            </div>
-                                            <div class="col-md-6">
-                                                @Html.DropDownList("FwdToCC", null, "-Select", new { @multiple = "multiple", @class = "select2 form-control m-t-15" })
-                                                @Html.ValidationMessageFor(model => model.Notes.FwdToCC, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>*@
-
-
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" id="btnSaveSign" class="btn btn-success">Save changes</button>
-                                </div>
-                            </form>
-                        </div>
+                            }
+                            <p style="height:5px;background:white"></p>
+                            <div id="append_@item.NotesId"></div>
+
+                        }
+
                     </div>
-                </div>
+                }
+
+                @*<div class="card-body replyDiv" style="display:none">
+                        <div class="editor replyYellowNote" id="editor3" name="ReplyText">
+                        </div>
+                        @Html.HiddenFor(x => x.Notes.ReplyText, new { @name = "ReplyText", @class = "greenNote editor" })
+                        <div class="text-right" style="padding-top:10px">
+                            <button class="btn btn-dark btn-sm" type="button" id="btnReplyNote">Submit</button>
+                        </div>
+                    </div>*@
+
             </div>
         </div>
     </div>
+    <div class="col-md-6" id="divFwd" style="display:none">
+        <form id="formForward" method="post" enctype="multipart/form-data">
+            <div class="card">
+                @Html.HiddenFor(x => x.InwardId)
+                <div class="card-header"><h4>Forward Note</h4></div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="control-label">Inward Number: </label>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.DisplayFor(x => x.InwardNumber, new { @class = "control-label" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="control-label">Subject:</label>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.DisplayFor(x => x.Subject, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="control-label">Inward Date:</label>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.DisplayFor(x => x.InwardDate, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="control-label">Due Date:</label>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.DisplayFor(x => x.DueDate, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="control-label">Priority:</label>
+                        </div>
+                        <div class="col-md-6">
+                            @Enum.GetName(typeof(e_Office.Models.EnumModel.Priority), Convert.ToInt32(Model.Priority))
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="control-label">Classification:</label>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.DisplayFor(x => x.ClassificationMaster.ClassificationName, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="control-label">From:</label>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.DisplayFor(x => x.From, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group row" id="fwd1">
+                        <div class="col-md-3">
+                            @Html.LabelFor(model => model.Notes.FwdToDept, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-6">
+                            @Html.DropDownList("FwdToDept", null, "-Select", new { @class = "select2 form-control m-t-15", @multiple = "multiple" })
+                            @Html.ValidationMessageFor(model => model.Notes.FwdToDept, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
 
+                    <div class="form-group row" id="fwd2">
+                        <div class="col-md-3">
+                            @Html.LabelFor(model => model.Notes.ForwardedTo, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-6">
+                            @Html.DropDownList("ForwardedTo", null, "-Select", new { @class = "select2 form-control custom-select" })
+                            @Html.ValidationMessageFor(model => model.Notes.ForwardedTo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row" id="fwd3">
+                        <div class="col-md-3">
+                            @Html.LabelFor(model => model.Notes.FwdToCC, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-6">
+                            @Html.DropDownList("FwdToCC", null, "-Select", new { @multiple = "multiple", @class = "select2 form-control m-t-15" })
+                            @Html.ValidationMessageFor(model => model.Notes.FwdToCC, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <button type="button" onclick="hideFwdDiv();" class="btn btn-md btn-secondary">Close</button>
+                    <button type="button" id="btnForward" class="btn btn-success btn-md">Send</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6" id="divReply" style="display:none">
+        <form id="formReply" method="post" enctype="multipart/form-data">
+            <div class="card">
+                @Html.HiddenFor(x => x.InwardId)
+                <div class="card-header"><h4>Reply To Note</h4></div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="control-label">Inward Number: </label>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.DisplayFor(x => x.InwardNumber, new { @class = "control-label" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="control-label">Subject:</label>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.DisplayFor(x => x.Subject, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="control-label">Inward Date:</label>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.DisplayFor(x => x.InwardDate, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="control-label">Due Date:</label>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.DisplayFor(x => x.DueDate, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="control-label">Priority:</label>
+                        </div>
+                        <div class="col-md-6">
+                            @Enum.GetName(typeof(e_Office.Models.EnumModel.Priority), Convert.ToInt32(Model.Priority))
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="control-label">Classification:</label>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.DisplayFor(x => x.ClassificationMaster.ClassificationName, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="control-label">From:</label>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(x => x.From, null, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            @Html.LabelFor(model => model.Notes.ReplyToDept, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-6">
+                            @Html.DropDownList("ReplyToDept", null, "-Select", new { @class = "select2 form-control m-t-15", @multiple = "multiple" })
+                            @Html.ValidationMessageFor(model => model.Notes.ReplyToDept, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            @Html.LabelFor(model => model.Notes.ReplyTo, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-6">
+                            @Html.TextBox("ReplyTo", Model.CreatedBy, new { @class = "form-control", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.Notes.ReplyTo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            @Html.LabelFor(model => model.Notes.ReplyToCC, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-6">
+                            @Html.DropDownList("ReplyToCC", null, "-Select", new { @multiple = "multiple", @class = "select2 form-control m-t-15" })
+                            @Html.ValidationMessageFor(model => model.Notes.ReplyToCC, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            @Html.Label("Reply Note", htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-6">
+                            <div class="editor replyYellowNote" id="editor3" name="ReplyText">
+                            </div>
+                            @Html.HiddenFor(x => x.Notes.ReplyText, new { @name = "ReplyText", @class = "editor" })
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <button type="button" onclick="hideReplyDiv();" class="btn btn-md btn-secondary">Close</button>
+                    <button type="button" id="btnReply" class="btn btn-success btn-md">Send</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
 
@@ -321,7 +425,7 @@
                         $("#btnSaveGreen").prop("disabled", false);
         }
     }
-      function readURL2(input) {
+    function readURL2(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
 
@@ -335,6 +439,30 @@
             reader.readAsDataURL(input.files[0]);
             $("#btnSaveYellow").prop("disabled", false);
         }
+    }
+
+    function showFwdDiv(noteId) {
+        $("#divFwd").show();
+        console.log(noteId);
+        $("#hiddenNotesId").val(noteId);
+        $("#divNotes").hide();
+    }
+
+    function hideFwdDiv() {
+        $("#divFwd").hide();
+        $("#divNotes").show();
+    }
+
+      function showReplyDiv(noteId) {
+        $("#divReply").show();
+        console.log(noteId);
+        $("#hiddenNotesId").val(noteId);
+        $("#divNotes").hide();
+    }
+
+    function hideReplyDiv() {
+        $("#divReply").hide();
+        $("#divNotes").show();
     }
 
     function fun(one) {
@@ -442,7 +570,7 @@
             var fileUpload = $('#fileSign1').get(0);
             var files = fileUpload.files;
             var formData = new FormData();
-            alert(files[0].name);
+           // alert(files[0].name);
             formData.append("NoteText", about.value);
             formData.append("InwardId", @Model.InwardId);
             formData.append(files[0].name, files[0]);
@@ -451,13 +579,18 @@
                 type: "POST",
                 url: url,
                 data: formData,
-                dataType: 'json',
+               // dataType: 'json',
                 contentType: false,
-                processData: false
-                }).done(function (res) {
+                processData: false,
+                success: function (msg)
+                {
                     location.reload();
-                });
-
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(XMLHttpRequest);
+                    console.log(textStatus);
+                }
+            });
         });
 
 
@@ -470,57 +603,70 @@
            var fileUpload = $('#fileSign2').get(0);
             var files = fileUpload.files;
             var formData = new FormData();
-            alert(files[0].name);
+           // alert(files[0].name);
             formData.append("NoteText", about.value);
             formData.append("InwardId", @Model.InwardId);
             formData.append(files[0].name, files[0]);
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: formData,
-                dataType: 'json',
-                contentType: false,
-                processData: false
-                }).done(function (res) {
-                                 location.reload();
-    
-                });
+         $.ajax({
+             type: "POST",
+             url: url,
+             data: formData,
+            // dataType: 'json',
+             contentType: false,
+             processData: false,
+              success: function (msg)
+                {
+                    location.reload();
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(XMLHttpRequest);
+                    console.log(textStatus);
+                }
+         });
 
      });
 
-        $('#btnReplyNote').click(function () {
-            var _content = document.getElementById("editor3").getElementsByClassName('ql-editor');
-            var about = document.getElementsByName('ReplyText');
-            console.log(_content);
-            about.value = JSON.stringify(_content[0].firstElementChild.innerHTML);
-            var noteId = $("#hiddenNotesId").val();//document.getElementById("btnReply").getAttribute('data-value');
-           // alert(noteId);
-            var url = "@Url.Action("ReplyNote","InwardNotes")";
-            var model = { NoteText :about.value, NoteId:noteId};
+     $('#btnReply').click(function () {
+         var _content = document.getElementById("editor3").getElementsByClassName('ql-editor');
+         var about = document.getElementsByName('ReplyText');
+         console.log(_content);
+         about.value = JSON.stringify(_content[0].firstElementChild.innerHTML);
+         var noteId = $("#hiddenNotesId").val();
+         var _reply = $("#ReplyTo").val();
+         var _replyDept = $("#ReplyToDept").val();
+         var _replyCC = $("#ReplyToCC").val();
+         var url = "@Url.Action("ReplyNote","InwardNotes")";
+         var model = { ReplyTo: _reply, ReplyToDept: _replyDept, ReplyToCC: _replyCC, NoteText: about.value, NoteId: noteId };
+
               $.ajax({
                 type: "POST",
                 data: JSON.stringify(model),
                 url: url,
                 contentType: "application/json"
-                 }).done(function (res) {
-              location.reload();
-            });
+              }).done(function (res)
+              {
+                     location.reload();
+
+                 });
+
         });
 
-          $('#btnFrwardNote').click(function () {
-              var noteId = $("#hiddenNotesId").val();// document.getElementById("btnForward").getAttribute('data-value');
+     $('#btnForward').click(function () {
+           var noteId = $("#hiddenNotesId").val();// document.getElementById("btnForward").getAttribute('data-value');
             //  alert(noteId);
-              var _forwarded = $("#ForwardedTo").val();
+         var _forwarded = $("#ForwardedTo").val();
+         var _fwdDept = $("#FwdToDept").val();
+          var _fwdCC = $("#FwdToCC").val();
             //  alert(_forwarded);
-            var url = "@Url.Action("ForwardNote","InwardNotes")";
-            var model = { ForwardedTo :_forwarded, NoteId:noteId};
+           var url = "@Url.Action("ForwardInward","InwardNotes")";
+          var model = { ForwardedTo :_forwarded, FwdToDept: _fwdDept, FwdToCC: _fwdCC,  NoteId:noteId};
               $.ajax({
                 type: "POST",
                 data: JSON.stringify(model),
                 url: url,
                 contentType: "application/json"
                  }).done(function (res) {
-          location.reload();
+                    location.reload();
             });
     });
 </script>

@@ -46,7 +46,7 @@ namespace e_Office.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "BasicHeadId")] BasicHeadMaster basicHeadMaster)
+        public ActionResult Create([Bind(Include = "BasicHeadId,BasicHeadName")] BasicHeadMaster basicHeadMaster)
         {
             if (ModelState.IsValid)
             {
@@ -78,7 +78,7 @@ namespace e_Office.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "BasicHeadId")] BasicHeadMaster basicHeadMaster)
+        public ActionResult Edit([Bind(Include = "BasicHeadId,BasicHeadName")] BasicHeadMaster basicHeadMaster)
         {
             if (ModelState.IsValid)
             {

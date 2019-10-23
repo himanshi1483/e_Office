@@ -1,0 +1,98 @@
+﻿@model IEnumerable<e_Office.Models.InwardNotes>
+
+@{
+    ViewBag.Title = "Outbox";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            @*<div class="card-header">
+                    <a class="btn btn-cyan float-right" href="@Url.Action("Create")">Create New</a>
+                </div>*@
+            <div class="card-body">
+                <h5 class="card-title m-b-0">Outbox</h5>
+            </div>
+            @if (Model.Count() > 0)
+            {
+                <table class="table table-bordered" style="width:98%;margin:10px;font-size:13px !important">
+                    <thead class="thead-custom">
+                        <tr>
+                            @*<th>
+                                    @Html.DisplayNameFor(model => model.InwardId)
+                                </th>*@
+                            <th>
+                                Note Type
+                            </th>
+                            <th>
+                                Note Text
+                            </th>
+                            <th>
+                                Created On
+                            </th>
+                            <th>
+                                Created By
+                            </th>
+
+                            <th>
+                                Replied To
+                            </th>
+
+
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.ReplyToDept)
+                                </td>*@
+                            <th>
+                                CC
+                            </th>
+                            @*<th>
+                                    @Html.DisplayNameFor(model => model.RepliedToNote)
+                                </th>*@
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                @*<td>
+                                        @Html.DisplayFor(modelItem => item.InwardId)
+                                    </td>*@
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NoteType)
+                                </td>
+                                <td>
+                                    @Html.Raw(Server.HtmlDecode(item.NoteText))
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreatedBy)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ReplyTo)
+                                </td>
+
+
+                                @*<td>
+                                        @Html.DisplayFor(modelItem => item.ReplyToDept)
+                                    </td>*@
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ReplyToCC)
+                                </td>
+
+                                @*<td>
+                                        @Html.DisplayFor(modelItem => item.RepliedToNote)
+                                    </td>*@
+                                <td class="text-center">
+                                    <a href="@Url.Action("ViewFile","InwardEntries", new { @id = item.InwardId, @doc= item.InwardDoc })" class="btn btn-sm btn-danger">View</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>

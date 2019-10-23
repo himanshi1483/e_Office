@@ -19,11 +19,16 @@ namespace e_Office.Models
         public bool IsSigned { get; set; }
         public string DigitalSign { get; set; }
         public string ForwardedTo { get; set; }
+        public string ReplyTo { get; set; }
         public string FwdToDept { get; set; }
         public string FwdToCC { get; set; }
+        public string ReplyToDept { get; set; }
+        public string ReplyToCC { get; set; }
         public string ForwardedBy { get; set; }
         public DateTime? ForwardedOn { get; set; }
         public int RepliedToNote { get; set; }
+
+        public string InwardDoc { get; set; }
 
         [NotMapped]
         public string ReplyText { get; set; }
